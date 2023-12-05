@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 
 import Image from 'next/image'
-import Footer from './components/Footer'
-import Navbar from './components/Navbar'
+import Footer from '@/components/Footer'
+import Navbar from '@/components/Navbar'
 import Link from 'next/link'
-import CheckoutForm from './components/form/CheckoutForm'
+import CheckoutForm from '@/components/form/CheckoutForm'
 
 export const metadata: Metadata = {
   title: 'Home | Litter Chat',

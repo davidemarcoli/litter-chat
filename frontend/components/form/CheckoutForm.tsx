@@ -3,12 +3,12 @@
 import React, { useState } from 'react'
 import {Button} from "@nextui-org/react";
 
-import CustomDonationInput from '../form/CustomDonationInput'
-import StripeTestCards from '../form/StripeTestCards'
+import CustomDonationInput from './CustomDonationInput'
+import StripeTestCards from './StripeTestCards'
 
-import { formatAmountForDisplay } from '../../(utils)/stripe-helpers'
-import * as config from '../../(config)/CurrencyConstants'
-import { createCheckoutSession } from '../../(actions)/stripe'
+import { formatAmountForDisplay } from '../../app/(utils)/stripe-helpers'
+import * as config from '../../app/(config)/CurrencyConstants'
+import { createCheckoutSession } from '../../app/(actions)/stripe'
 
 export default function CheckoutForm(): JSX.Element {
   const [loading] = useState<boolean>(false)

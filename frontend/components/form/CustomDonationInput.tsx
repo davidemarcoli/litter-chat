@@ -1,4 +1,4 @@
-import { formatAmountForDisplay } from '../../(utils)/stripe-helpers'
+import { formatAmountForDisplay } from '../../app/(utils)/stripe-helpers'
 
 const CustomDonationInput = ({
   name,

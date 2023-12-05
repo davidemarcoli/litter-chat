@@ -13,10 +13,10 @@ import {
 import CustomDonationInput from './CustomDonationInput'
 import StripeTestCards from './StripeTestCards'
 
-import { formatAmountForDisplay } from '../../(utils)/stripe-helpers'
-import * as config from '../../(config)/CurrencyConstants'
-import getStripe from '../../(utils)/getStripe'
-import { createPaymentIntent } from '../../(actions)/stripe'
+import { formatAmountForDisplay } from '../../app/(utils)/stripe-helpers'
+import * as config from '../../app/(config)/CurrencyConstants'
+import getStripe from '../../app/(utils)/getStripe'
+import { createPaymentIntent } from '../../app/(actions)/stripe'
 
 const CheckoutForm = () => {
   const [input, setInput] = React.useState<{

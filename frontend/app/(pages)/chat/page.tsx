@@ -1,8 +1,8 @@
 "use server"
 
-import RoundedTextBox from "@/app/components/chat/TextField"
-import ChatList from "../../components/chat/ChatList"
-import ChatArea from "@/app/components/chat/ChatArea"
+import RoundedTextBox from "@/components/chat/TextField"
+import ChatList from "@/components/chat/ChatList"
+import ChatArea from "@/components/chat/ChatArea"
 
 const Chat = () => {
     return (
