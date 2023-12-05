@@ -49,24 +49,23 @@ const ChatList = () => {
               <h2 className="font-bold">Matches</h2>
             </div>
             <div className="">
-              <ul className="space-y-2 px-2 overflow-y-scroll overflow-x-hidden">
+              <ul className="space-y-2 px-2 overflow-x-hidden overflow-y-scroll">
                 {test_chats.map((item, index) => (
-                  <li key={index} onClick={() => handleItemClick(item.id)} className={`hover:bg-SELECTED_PURPLE p-4 rounded 
+                  <li key={index} onClick={() => handleItemClick(item.id)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
                   ${selectedItem === item.id ? 'bg-DARK_PURPLE' : ''}`}>
                     <div className="flex flex-row">
                       <div className="flex-none">
-                      <Badge content="5" color="secondary">
-                        <Avatar
-                          isBordered
-                          radius="md"
-                          size="lg"
-                          src={item.url}
-                        />
+                      <Badge content="5" className="bg-orange-400">
+                          <Avatar
+                            radius="md"
+                            size="lg"
+                            src={item.url}
+                          />
                       </Badge>
                       </div>
                       <div className="flex-col px-4">
                         <p className="font-bold">{item.name}</p>
-                        <p className="text-sm">{item.lastMessage}</p>
+                        <p className="text-sm text-gray-400">{item.lastMessage}</p>
                       </div>
                   </div>
                   </li>

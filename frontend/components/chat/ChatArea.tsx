@@ -5,6 +5,7 @@ import RoundedTextBox from './TextField';
 import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
+import {Chip} from "@nextui-org/react";
 
 enum ActiveContent {
     CHAT,
