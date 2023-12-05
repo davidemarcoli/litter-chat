@@ -13,7 +13,9 @@ const Header = () => {
         />
       </div>
       <div className="flex-col px-6">
-        <h2 className="font-bold self-center">Francisca</h2>
+        <h1 className="text-white font-bold text-2xl self-center">Francisca Marionette</h1>
+        {/* wouldn't know how to implement this honestly... */}
+        <p className="text-green-400">Online</p>
       </div>
     </div>
   );

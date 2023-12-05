@@ -5,11 +5,13 @@ import RoundedTextBox from './TextField';
 import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
+import {Chip} from "@nextui-org/react";
 
 enum ActiveContent {
     CHAT,
     PROMO,
     /* Add more, depending */
+    // potential swipe part (either as compartment or own page)
 }
 
 interface Message {
@@ -22,20 +24,13 @@ const ChatArea = () => {
     const [activeCompartment, setActiveCompartment] = useState<ActiveContent|null>(null)
     const [messages, setMessages] = useState<Message[]>([]);
 
-    const testMessages = [
-        {message:"Hello there cool guy !", timestamp:"10:32", isUser:true},
-        {message:"Hello there cool guy !", timestamp:"10:32", isUser:false},
-        {message:"Hello there cool guy !", timestamp:"10:32", isUser:true},
-        {message:"Hello there cool guy !", timestamp:"10:32", isUser:true}
-    ]
-
     const handleSendMessage = (newMessage: Message) => {
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
       };
       
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-gray-400">
         <div className="relative">
             <div className="w-full sticky top-0">
                 <Header/>
@@ -43,7 +38,7 @@ const ChatArea = () => {
         </div>
         
         {activeCompartment !== ActiveContent.CHAT ? (
-            <div className="flex-grow">
+            <div className="flex-grow overflow-y-scroll pt-4">
                 <ul>
                     {messages.map((item, index) => (
                     <li key={index}>
