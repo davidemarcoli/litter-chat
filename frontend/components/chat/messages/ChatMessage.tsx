@@ -8,8 +8,8 @@ interface ChatMessage {
 
 const ChatMessage = ({ message, timestamp, isUser }: ChatMessage) => {
   const messageClass = isUser
-    ? 'bg-PURPLE text-white self-end rounded-bl-full rounded-br-full rounded-tl-full'
-    : 'bg-WHITE text-gray-800 rounded-bl-full rounded-br-full rounded-tr-full';
+    ? 'bg-PURPLE text-white self-end rounded-bl-lg rounded-br-lg rounded-tl-lg'
+    : 'bg-WHITE text-gray-800 rounded-bl-lg rounded-br-lg rounded-tr-gl';
   
   const containerClass = `max-w-[50%] break-all mb-4 ${
     isUser ? 'self-end float-right pr-2' : 'pl-2'
