@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import {Button} from "@nextui-org/react";
 
 import CustomDonationInput from '../form/CustomDonationInput'
 import StripeTestCards from '../form/StripeTestCards'
@@ -24,7 +25,7 @@ export default function CheckoutForm(): JSX.Element {
     })
 
   return (
-    <form action={createCheckoutSession}>
+    <form action={createCheckoutSession} className='bg-orange-600'>
       <CustomDonationInput
         className="checkout-style"
         name="customDonation"
@@ -36,13 +37,10 @@ export default function CheckoutForm(): JSX.Element {
         value={input.customDonation}
       />
       <StripeTestCards />
-      <button
-        className="checkout-style-background"
-        type="submit"
-        disabled={loading}
-      >
+        <Button type="submit"
+        disabled={loading} color="secondary">
         Donate {formatAmountForDisplay(input.customDonation, config.CURRENCY)}
-      </button>
+      </Button>  
     </form>
   )
 }
