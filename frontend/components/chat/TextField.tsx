@@ -44,6 +44,7 @@ const RoundedTextBox: React.FC<SendButtonProps> = ({onSendMessage}) => {
       </div>
       */
       }
+      
       <button className="absolute right-0 top-0 bottom-0 flex items-center justify-center w-12 rounded-r-full bg-PINK" onClick={handleSendClick}>
         {/*TODO(sascha): replace with icon */}
         <Image src="https://cdn-icons-png.flaticon.com/512/60/60525.png" alt="Arrow" className="w-6 h-6 text-white"/>
