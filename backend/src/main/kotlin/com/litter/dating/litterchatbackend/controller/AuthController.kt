@@ -15,7 +15,7 @@ class AuthController(private val userRepository: UserRepository, private val pas
 
     @PostMapping("/login")
     fun login(@RequestBody loginRequest: LoginRequest): ResponseEntity<User> {
-        val user = userRepository.findByUsername(loginRequest.username)
+        val user = userRepository.findByEmail(loginRequest.email)
             ?: throw AuthenticationCredentialsNotFoundException("Invalid password")
 
         if (!passwordEncoder.matches(loginRequest.password, user.password)) {
@@ -25,8 +25,8 @@ class AuthController(private val userRepository: UserRepository, private val pas
         return ResponseEntity(user, HttpStatus.OK)
     }
 
-    @PostMapping("/register")
-    fun register(@RequestBody user: User): ResponseEntity<User> {
+    @PostMapping("/signup") //TODO: duplicate email check
+    fun signup(@RequestBody user: User): ResponseEntity<User> {
         // hash password
         val hashedPassword = passwordEncoder.encode(user.password)
         val userToSave = user.copy(password = hashedPassword)
