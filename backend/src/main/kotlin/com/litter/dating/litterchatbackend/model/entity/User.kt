@@ -1,19 +1,25 @@
+package com.litter.dating.litterchatbackend.model.entity
+
+import org.springframework.data.annotation.Id
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
+import java.time.LocalDateTime
+
 data class User(
     @Id
     val id: String? = null,
-    val name: String,
     val email: String,
-    val password: String,
-    val roles: Set<Role> = setOf(Role.USER),
+    private val password: String,
     val enabled: Boolean = true,
     val accountNonExpired: Boolean = true,
     val accountNonLocked: Boolean = true,
     val credentialsNonExpired: Boolean = true,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime = LocalDateTime.now(),
+    val profile: Profile? = null
 ) : UserDetails {
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return roles.map { SimpleGrantedAuthority(it.name) }
+        return emptyList()
     }
 
     override fun isEnabled(): Boolean {
@@ -28,15 +34,15 @@ data class User(
         return credentialsNonExpired
     }
 
-    override fun getPassword(): String {
-        return password
-    }
-
     override fun isAccountNonExpired(): Boolean {
         return accountNonExpired
     }
 
     override fun isAccountNonLocked(): Boolean {
         return accountNonLocked
+    }
+
+    override fun getPassword(): String {
+        return password
     }
 }
