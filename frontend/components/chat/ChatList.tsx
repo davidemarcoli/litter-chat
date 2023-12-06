@@ -12,7 +12,7 @@ const test_chats = [
   { id: 5, name: "Samuel", lastMessage: "ughhh ok", url: "https://i.pinimg.com/564x/50/74/bb/5074bb59d88588bff4964d1101861d92.jpg"},
   { id: 6, name: "Jamal", lastMessage: "Hey", url:"https://i.pinimg.com/564x/ff/b9/3d/ffb93d28979429ce561317b54086023f.jpg"},
   { id: 7, name: "Blake", lastMessage: "Die you worthless piece of shi...", url: "https://i.pinimg.com/564x/5c/57/20/5c57208824c8d11fc67269b341ed93bd.jpg"},
-  { id: 8, name: "Nadine", lastMessage: "Jinkees", url: "https://noseryoung.ch/wp-content/uploads/2020/09/Nadine_1000x1000px.jpg"},
+  { id: 8, name: "Nadine", lastMessage: "Jinkees", url: "https://noseryoung.ch/wp-content/uploads/2020/09/Nadine_1000x1000px.jpg"}
 ]
 
 const ChatList = () => {
