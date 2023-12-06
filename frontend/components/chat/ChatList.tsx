@@ -2,6 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {Badge, Avatar, Button, Image } from "@nextui-org/react";
+import Link from "next/link";
 
 const test_chats = [
   { id: 1, name: "Francisca", lastMessage: "Hey", url:"https://i.pinimg.com/564x/e3/0c/56/e30c5626d0b263c6a70edd67c4a1dd8a.jpg"},
@@ -33,8 +34,14 @@ const ChatList = () => {
     
     return (
         <>
-          <div className="bg-PURPLE text-white relative h-screen overflow-y-hidden">
-            
+          <div className="bg-PURPLE text-white relative">
+           
+            {/* Profile */}
+            <div>
+              <Link href="/profile">Profile</Link>
+            </div>
+
+            {/* Discover button */}
             <div>
               <Button
               variant="flat"
@@ -45,11 +52,12 @@ const ChatList = () => {
                 Discover New Matches
               </Button>
             </div>
+
+            {/* Matches List */}
             <div className="pt-4">
               <h2 className="font-bold">Matches</h2>
             </div>
-            <div className="">
-              <ul className="space-y-2 px-2 overflow-x-hidden overflow-y-scroll">
+              <ul className="space-y-2 px-2">
                 {test_chats.map((item, index) => (
                   <li key={index} onClick={() => handleItemClick(item.id)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
                   ${selectedItem === item.id ? 'bg-DARK_PURPLE' : ''}`}>
@@ -67,11 +75,10 @@ const ChatList = () => {
                         <p className="font-bold">{item.name}</p>
                         <p className="text-sm text-gray-400">{item.lastMessage}</p>
                       </div>
-                  </div>
+                    </div>
                   </li>
                 ))}
               </ul>
-              </div>
           </div>
         </>
       );
