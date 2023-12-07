@@ -15,18 +15,22 @@ const test_chats = [
   { id: 8, name: "Nadine", lastMessage: "Jinkees", url: "https://noseryoung.ch/wp-content/uploads/2020/09/Nadine_1000x1000px.jpg"}
 ]
 
-const ChatList = () => {
+interface ChatList {
+  matches: any, // bin faul gsi... es isch 00:53 uhr
+  onOpenChat: (chatUser: any) => void;
+}
+
+const ChatList = ({matches, onOpenChat}: ChatList) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
-    const [chats, setChats] = useState([])
 
     interface OverflowSilder {
       items: string[];
     }
 
-    const handleItemClick = (id: number) => {
-      setSelectedItem(id);
+    const handleItemClick = (chatUser) => {
+      setSelectedItem(chatUser.id);
       // Open chat field
-      // ...
+      onOpenChat(chatUser)
     };
 
     useEffect(() => {
@@ -58,8 +62,8 @@ const ChatList = () => {
               <h2 className="font-bold">Matches</h2>
             </div>
               <ul className="space-y-2 px-2">
-                {test_chats.map((item, index) => (
-                  <li key={index} onClick={() => handleItemClick(item.id)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
+                {matches.map((item, index) => (
+                  <li key={index} onClick={() => handleItemClick(item)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
                   ${selectedItem === item.id ? 'bg-DARK_PURPLE' : ''}`}>
                     <div className="flex flex-row">
                       <div className="flex-none">

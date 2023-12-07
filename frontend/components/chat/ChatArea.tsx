@@ -11,22 +11,22 @@ interface Message {
     content: string 
     timestamp: string 
     isUser: boolean
-  }
+}
 
-const ChatArea = () => {
+const ChatArea = ({currentChat}) => {
     const [messages, setMessages] = useState<Message[]>([]);
 
     const handleSendMessage = (newMessage: Message) => {
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
-      };
+    };
       
   return (
     <div className="flex flex-col h-full bg-gray-400">
        
         {/* Chat header */}
         <div className="w-full sticky top-0">
-            <Header/>
+            <Header name={currentChat.name} avatarImg={currentChat.url}/>
         </div>
         
         {/* Chat feed */}
