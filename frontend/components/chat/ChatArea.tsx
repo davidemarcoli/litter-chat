@@ -6,17 +6,12 @@ import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
 import {Chip} from "@nextui-org/react";
+import { ChatAreaProps, MessageType } from '../types/types';
 
-interface Message {
-    content: string 
-    timestamp: string 
-    isUser: boolean
-}
+const ChatArea = ({currentChat}: ChatAreaProps) => {
+    const [messages, setMessages] = useState<MessageType[]>([]);
 
-const ChatArea = ({currentChat}) => {
-    const [messages, setMessages] = useState<Message[]>([]);
-
-    const handleSendMessage = (newMessage: Message) => {
+    const handleSendMessage = (newMessage: MessageType) => {
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
     };

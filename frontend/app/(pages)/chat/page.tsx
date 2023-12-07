@@ -17,6 +17,7 @@ const test_chats = [
   ]
 
 const Chat = () => {
+    // bin faul gsi... es isch 00:53 uhr
     const [selectedItem, setSelectedItem] = useState({ id: 999, name: "Default", lastMessage: "...", url: "https://i.pinimg.com/564x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg"});
 
     const handleOpenChat = (chatUser: any) => {
