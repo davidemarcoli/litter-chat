@@ -1,8 +1,8 @@
 "use client"
 
-import RoundedTextBox from "@/components/chat/TextField"
 import ChatList from "@/components/chat/ChatList"
 import ChatArea from "@/components/chat/ChatArea"
+import Sockette from 'sockette';
 import { useState } from "react"
 
 const test_chats = [
@@ -15,6 +15,16 @@ const test_chats = [
     { id: 7, name: "Blake", lastMessage: "Die you worthless piece of shi...", url: "https://i.pinimg.com/564x/5c/57/20/5c57208824c8d11fc67269b341ed93bd.jpg"},
     { id: 8, name: "Nadine", lastMessage: "Jinkees", url: "https://noseryoung.ch/wp-content/uploads/2020/09/Nadine_1000x1000px.jpg"}
   ]
+
+  const webSocketUrl = "ws://localhost:3000/ws/{dynamicChatroomIdentifier}"
+  const sockette = new Sockette(webSocketUrl, {
+      timeout: 5e3,
+      maxAttempts: 10,
+      onmessage: e => console.log("Recieved:", e),
+      onopen: e => console.log("Connected!:", e),
+      onclose: e => console.log("Closed!:", e),
+      onerror: e => console.log("Error:", e)
+  })
 
 const Chat = () => {
     // bin faul gsi... es isch 00:53 uhr

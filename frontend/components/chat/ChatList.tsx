@@ -18,7 +18,6 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
     }, [selectedItem])
     
     return (
-        <>
           <div className="bg-PURPLE text-white relative">
            
             {/* Profile */}
@@ -65,7 +64,6 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
                 ))}
               </ul>
           </div>
-        </>
       );
 };
 
