@@ -40,7 +40,9 @@ export const options: NextAuthOptions = {
                         return res.json()
                     }
                 }).then((data) => {
-                    console.log(data)
+                    console.log("Data", data)
+                    data.name = data.profile?.name;
+                    console.log("Modified Data", data)
                     return data
                 }).catch((err) => {
                     console.log(err)
