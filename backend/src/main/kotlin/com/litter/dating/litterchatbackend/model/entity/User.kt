@@ -45,4 +45,8 @@ data class User(
     override fun getPassword(): String {
         return password
     }
+
+    fun setPassword(password: String): User {
+        return this.copy(password = password)
+    }
 }

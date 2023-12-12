@@ -1,6 +1,6 @@
 package com.litter.dating.litterchatbackend.model
 
-data class LoginRequest(
+data class AuthRequest(
     val email: String,
     val password: String
 )
