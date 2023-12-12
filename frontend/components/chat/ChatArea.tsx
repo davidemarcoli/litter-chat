@@ -25,7 +25,7 @@ const ChatArea = ({currentChat}: ChatAreaProps) => {
         </div>
         
         {/* Chat feed */}
-        <div className="flex-grow overflow-y-scroll pt-4">
+        <div className="flex-grow overflow-y-auto pt-4">
             <ul>
                 {messages.map((item, index) => (
                 <li key={index}>
