@@ -91,7 +91,7 @@ export function SignupForm({className, ...props}: SignupFormFormProps) {
                                        placeholder="password" {...field} />
                             </FormControl>
                             <FormDescription>
-                                Shhhh, don't tell anyone. It's a secret. 🤫
+                                Shhhh, don&apos;t tell anyone. It&apos;s a secret. 🤫
                             </FormDescription>
                             <FormMessage/>
                         </FormItem>
