@@ -13,7 +13,7 @@ const Navbar = async () => {
             className="h-12 text-red-500 p-4 flex items-center justify-between border-b-2 border-b-red-500 uppercase md:h-24 lg:px-20 xl:px-40">
             {/* LEFT LINKS */}
             <div className="hidden md:flex gap-4 flex-1">
-                <Link href="/">Somehting</Link>
+                <Link href="/chat">Chat</Link>
 
             </div>
             {/* LOGO */}
@@ -29,7 +29,7 @@ const Navbar = async () => {
                 {/* Update Navbar based on role*/}
                 {!session?.user ? (
                     <Link href="/api/auth/signin?callbackUrl=%2F">Login</Link>
-                ) : (<p>You are logged in</p>)}
+                ) : (<p>You are logged in ({session.user.email})</p>)}
             </div>
         </div>
     );
