@@ -48,7 +48,7 @@ class AuthController(
         return ResponseEntity(savedUser, HttpStatus.CREATED)
     }
 
-    @PostMapping("/generateToken")
+    @PostMapping("/token")
     fun authenticateAndGetToken(@RequestBody authRequest: AuthRequest): String {
         val authentication: Authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
