@@ -49,7 +49,7 @@ export default function LoginPage() {
                     <div className="relative z-20 mt-auto">
                         <blockquote className="space-y-2">
                             <p className="text-lg">
-                                &ldquo;Dating with garbage??? LET'SSS FUCKING GOOOO&rdquo;
+                                &ldquo;Dating with garbage??? LET&apos;SSS FUCKING GOOOO&rdquo;
                             </p>
                             <footer className="text-sm">Some weird dude</footer>
                         </blockquote>
