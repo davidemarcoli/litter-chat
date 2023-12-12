@@ -24,16 +24,11 @@ class JwtService {
             .subject(userId)
             .issuedAt(Date(System.currentTimeMillis()))
             .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 30))
-            .signWith(getSigningKey()).compact()
-    }
-
-    private fun getSigningKey(): Key {
-        val keyBytes = Decoders.BASE64.decode(SECRET)
-        return Keys.hmacShaKeyFor(keyBytes)
+            .signWith(signKey).compact()
     }
 
     private val signKey: Key
-        private get() {
+        get() {
             val keyBytes = Decoders.BASE64.decode(SECRET)
             return Keys.hmacShaKeyFor(keyBytes)
         }
