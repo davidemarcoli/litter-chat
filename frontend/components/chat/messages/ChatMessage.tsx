@@ -2,7 +2,7 @@ import React from 'react'
 
 interface ChatMessage {
   message: string
-  timestamp: string
+  timestamp: Date
   isUser: boolean
 }
 
@@ -25,7 +25,7 @@ const ChatMessage = ({ message, timestamp, isUser }: ChatMessage) => {
         )}
         <p>{message}</p>
       </div>
-      <div className="text-xs text-gray-500 text-right">{timestamp}</div>
+      <div className="text-xs text-gray-500 text-right">{timestamp.toLocaleDateString()} {timestamp.toLocaleTimeString()}</div>
     </div>
   )
 }

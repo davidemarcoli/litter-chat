@@ -6,14 +6,20 @@ import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
 import {Chip} from "@nextui-org/react";
-import { ChatAreaProps, MessageType } from '../types/types';
+import { ChatAreaProps, ChatMessageType } from '../types/types';
+import {useSession} from "next-auth/react";
 
-const ChatArea = ({currentChat}: ChatAreaProps) => {
-    const [messages, setMessages] = useState<MessageType[]>([]);
+const ChatArea = ({currentChat, onSendMessage}: ChatAreaProps) => {
+    const [messages, setMessages] = useState<ChatMessageType[]>([]);
 
-    const handleSendMessage = (newMessage: MessageType) => {
+    const session = useSession()
+
+    const handleSendMessage = (newMessage: ChatMessageType) => {
+        console.log(session)
+
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
+        onSendMessage(newMessage);
     };
       
   return (
@@ -21,7 +27,7 @@ const ChatArea = ({currentChat}: ChatAreaProps) => {
        
         {/* Chat header */}
         <div className="w-full sticky top-0">
-            <Header name={currentChat.name} avatarImg={currentChat.url}/>
+            <Header name={currentChat.profile.name} avatarImg={currentChat.profile.imageUrl}/>
         </div>
         
         {/* Chat feed */}
@@ -30,7 +36,8 @@ const ChatArea = ({currentChat}: ChatAreaProps) => {
                 {messages.map((item, index) => (
                 <li key={index}>
                     <div className="flex flex-col">
-                        <ChatMessage message={item.content} timestamp={item.timestamp} isUser={item.isUser}/>
+                        {/*TODO: is user*/}
+                        <ChatMessage message={item.content} timestamp={item.createdAt} isUser={true}/>
                     </div>
                 </li>
             ))}

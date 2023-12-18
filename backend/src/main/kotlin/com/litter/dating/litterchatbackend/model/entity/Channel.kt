@@ -7,5 +7,5 @@ data class Channel(
     val id: String? = null,
     //val name: String,
     val members: List<User>,
-    val messages: List<Message> = emptyList()
+    val chatMessages: List<ChatMessage> = emptyList()
 )

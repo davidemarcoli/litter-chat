@@ -1,17 +1,18 @@
 "use client"
 
 import React, {useEffect, useState} from "react";
-import {Badge, Avatar, Button, Image } from "@nextui-org/react";
+import {Badge, Avatar, Button as NextUIButton, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { ChatListProps, UserType } from "../types/types";
+import {Button} from "@/components/ui/button";
 
 const ChatList = ({matches, onOpenChat}: ChatListProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
-    const handleItemClick = (chatUser: UserType) => {
-      setSelectedItem(chatUser.id);
+    const handleItemClick = (index: number) => {
+      setSelectedItem(index);
       // Open chat field
-      onOpenChat(chatUser)
+      onOpenChat(matches[index]);
     };
 
     useEffect(() => {
@@ -27,14 +28,18 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
 
             {/* Discover button */}
             <div>
-              <Button
+              <NextUIButton
               variant="flat"
               color="default"
               radius="lg"
               size="sm">
                 <Image></Image>
                 Discover New Matches
-              </Button>
+              </NextUIButton>
+                <Button>
+                    <Image></Image>
+                    Discover New Matches
+                </Button>
             </div>
 
             {/* Matches List */}
@@ -43,21 +48,22 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
             </div>
               <ul className="space-y-2 px-2">
                 {matches.map((item: UserType, index) => (
-                  <li key={index} onClick={() => handleItemClick(item)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
-                  ${selectedItem === item.id ? 'bg-DARK_PURPLE' : ''}`}>
+                  <li key={index} onClick={() => handleItemClick(index)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
+                  ${selectedItem === index ? 'bg-DARK_PURPLE' : ''}`}>
                     <div className="flex flex-row">
-                      <div className="flex-none">
-                      <Badge content="5" className="bg-orange-400">
-                          <Avatar
-                            radius="md"
-                            size="lg"
-                            src={item.url}
-                          />
-                      </Badge>
-                      </div>
+                      {/*<div className="flex-none">*/}
+                      {/*<Badge content="5" className="bg-orange-400">*/}
+                          {/*<Avatar*/}
+                          {/*  radius="md"*/}
+                          {/*  size="lg"*/}
+                          {/*  src={item.url}*/}
+                          {/*/>*/}
+                          <Image width={50} height={50} src={item.profile.imageUrl}></Image>
+                      {/*</Badge>*/}
+                      {/*</div>*/}
                       <div className="flex-col px-4">
-                        <p className="font-bold">{item.name}</p>
-                        <p className="text-sm text-gray-400">{item.lastMessage}</p>
+                        <p className="font-bold">{item.profile.name}</p>
+                        <p className="text-sm text-gray-400">{item.profile.bio}</p>
                       </div>
                     </div>
                   </li>

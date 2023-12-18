@@ -1,14 +1,9 @@
 import React, {useState} from 'react';
 import {Image} from "@nextui-org/react";
+import {ChatMessageType} from "@/components/types/types";
 
 interface SendButtonProps {
-    onSendMessage: (message: Message) => void;
-}
-
-interface Message {
-    content: string
-    timestamp: string
-    isUser: boolean
+    onSendMessage: (message: ChatMessageType) => void;
 }
 
 const RoundedTextBox: React.FC<SendButtonProps> = ({onSendMessage}) => {
@@ -19,8 +14,24 @@ const RoundedTextBox: React.FC<SendButtonProps> = ({onSendMessage}) => {
         if (messageContent?.trim() !== "") {
             onSendMessage({
                 content: messageContent,
-                timestamp: `${date.getHours() < 10 ? "0" + date.getHours().toString() : date.getHours().toString()}:${date.getMinutes() < 10 ? "0" + date.getMinutes().toString() : date.getMinutes().toString()}`,
-                isUser: true
+                createdAt: new Date(),
+                sender: {
+                    id: "1",
+                    email: "dasdasd",
+                    profile: {
+                        id: "1",
+                        name: "Sascha",
+                        bio: "I'm a cool guy",
+                        imageUrl: "https://i.pinimg.com/564x/ff/b9/3d/ffb93d28979429ce561317b54086023f.jpg",
+                        createdAt: new Date(),
+                        updatedAt: new Date()
+                    }
+                },
+                channel: {
+                    id: 1,
+                    members: [],
+                    chatMessages: []
+                }
             })
             setMessageContent("")
         }
@@ -41,7 +52,7 @@ const RoundedTextBox: React.FC<SendButtonProps> = ({onSendMessage}) => {
                         handleSend()
                     }
                 }}
-                className="w-full p-4 rounded-l-full rounded-r-full border border-gray-300 bg-WHITE"
+                className="w-full p-4 rounded-l-full rounded-r-full border border-gray-300 bg-WHITE text-black"
                 placeholder="Type something..."
             />
 

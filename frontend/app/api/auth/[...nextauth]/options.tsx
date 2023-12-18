@@ -25,18 +25,17 @@ export const options: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: {label: "Username", type: "text", placeholder: "username 🦹"},
+                email: {label: "Email", type: "email", placeholder: "email 🦹"},
                 password: {label: "Password", type: "password", placeholder: "password 😼"}
             },
             async authorize(credentials) {
-
                 const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/token", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        email: credentials?.username,
+                        email: credentials?.email,
                         password: credentials?.password
                     })
                 })
@@ -45,7 +44,10 @@ export const options: NextAuthOptions = {
                     return null
                 }
 
-                return res.json();
+                const data = await res.text();
+                console.log("Data", data)
+
+                return data
 
                 // return fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", {
                 //     method: "POST",
