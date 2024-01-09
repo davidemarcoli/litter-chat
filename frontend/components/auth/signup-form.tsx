@@ -85,7 +85,7 @@ export function SignupForm({className, ...props}: SignupFormFormProps) {
                     name="password"
                     render={({field}) => (
                         <FormItem>
-                            <FormLabel>Username</FormLabel>
+                            <FormLabel>Password</FormLabel>
                             <FormControl>
                                 <Input type={"password"} autoComplete={"current-password"}
                                        placeholder="password" {...field} />
