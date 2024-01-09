@@ -27,6 +27,13 @@ import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
 
 const profileFormSchema = z.object({
+  name: z
+    .string()
+    .min(2, {message: "More letters people"}),
+  gender: z
+    .string({
+      required_error: "Please select an option to display.",
+    }),
   imageSource: z
     .string(),
   profession: z
@@ -47,13 +54,15 @@ type ProfileFormValues = z.infer<typeof profileFormSchema>
 // This can come from your database or API.
 const defaultValues: Partial<ProfileFormValues> = {
   // TODO(pleb): fetch data here
+  name: "",
+  gender: "type-1",
   imageSource: "https://i.pinimg.com/736x/69/00/95/690095e35a8fc72b2b597af61900dd1f.jpg",
   profession: "",
   bio: "",
   looking_for: "type-1"
 }
 
-const ProfileForm = () => {
+const InitalProfileForm = () => {
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileFormSchema),
     defaultValues,
@@ -93,13 +102,50 @@ const ProfileForm = () => {
             </FormItem>
           )}
         />
-        
-        <div className="bg-orange-400">
-          Christina 99
-          <div>
-            <span>She/her</span>
-          </div>
-        </div>
+
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input placeholder="What's your name" {...field} />
+              </FormControl>
+              <FormDescription>
+                blah blah blah
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="gender"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Preffered Gender</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a verified email to display" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="type-1">She/Her</SelectItem>
+                  <SelectItem value="type-2">He/Him</SelectItem>
+                  <SelectItem value="type-3">They/Them</SelectItem>
+                  <SelectItem value="type-4">Other</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>
+                blah blah blah
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         
         <FormField
           control={form.control}
@@ -165,10 +211,10 @@ const ProfileForm = () => {
           )}
         />
 
-        <Button type="submit">Update profile</Button>
+        <Button type="submit">Create profile</Button>
       </form>
     </Form>
   )
 }
 
-export default ProfileForm
+export default InitalProfileForm
