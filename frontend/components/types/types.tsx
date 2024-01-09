@@ -4,13 +4,13 @@
  */
 
 // Component PROPS:
-interface ChatListProps {
-    matches: UserType[], // bin faul gsi... es isch 00:53 uhr
-    onOpenChat: (chatUser: any) => void;
+interface ChannelListProps {
+    channels: ChannelType[], // bin faul gsi... es isch 00:53 uhr
+    onOpenChannel: (chatUser: any) => void;
 }
 
 interface ChatAreaProps {
-    currentChat: UserType  // TODO(sascha): Added this as a quick fix.
+    currentChannel: ChannelType  // TODO(sascha): Added this as a quick fix.
     onSendMessage: (newMessage: ChatMessageType) => void;
 }
 
@@ -44,4 +44,4 @@ interface ProfileType {
     updatedAt: Date
 }
 
-export type {ChatListProps, ChatAreaProps, ChatMessageType, ChannelType, UserType, ProfileType};
+export type {ChannelListProps, ChatAreaProps, ChatMessageType, ChannelType, UserType, ProfileType};

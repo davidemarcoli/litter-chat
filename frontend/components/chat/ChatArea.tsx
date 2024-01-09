@@ -6,11 +6,11 @@ import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
 import {Chip} from "@nextui-org/react";
-import { ChatAreaProps, ChatMessageType } from '../types/types';
+import {ChatAreaProps, ChatMessageType, UserType} from '../types/types';
 import {useSession} from "next-auth/react";
 
-const ChatArea = ({currentChat, onSendMessage}: ChatAreaProps) => {
-    const [messages, setMessages] = useState<ChatMessageType[]>([]);
+const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
+    const [messages, setMessages] = useState<ChatMessageType[]>(currentChannel.chatMessages);
 
     const session = useSession()
 
@@ -21,13 +21,29 @@ const ChatArea = ({currentChat, onSendMessage}: ChatAreaProps) => {
         setMessages(updatedMessages);
         onSendMessage(newMessage);
     };
+
+    const isUser = (user: UserType) => {
+        return user.id === "1"; // TODO: replace with current user
+    }
+
+    // TODO: this is a duplicate of the one in ChannelList.tsx
+    const getUserForChat = (users: UserType[]) => {
+        console.log(users)
+        console.log(currentChannel)
+        const user = users.find((user) => user.id !== "1"); // TODO: replace with current user
+        if (!user) {
+            return users[0];
+        } else {
+            return user;
+        }
+    }
       
   return (
     <div className="flex flex-col h-full bg-gray-400">
        
         {/* Chat header */}
         <div className="w-full sticky top-0">
-            <Header name={currentChat.profile.name} avatarImg={currentChat.profile.imageUrl}/>
+            <Header name={getUserForChat(currentChannel.members).profile?.name} avatarImg={getUserForChat(currentChannel.members).profile?.imageUrl}/>
         </div>
         
         {/* Chat feed */}
@@ -36,8 +52,7 @@ const ChatArea = ({currentChat, onSendMessage}: ChatAreaProps) => {
                 {messages.map((item, index) => (
                 <li key={index}>
                     <div className="flex flex-col">
-                        {/*TODO: is user*/}
-                        <ChatMessage message={item.content} timestamp={item.createdAt} isUser={true}/>
+                        <ChatMessage message={item.content} timestamp={item.createdAt} isUser={isUser(item.sender)}/>
                     </div>
                 </li>
             ))}
