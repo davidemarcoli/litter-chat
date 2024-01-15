@@ -43,7 +43,6 @@ class SecurityConfig {
             .authorizeHttpRequests { authz ->
                 authz
                     .requestMatchers("/auth/*").permitAll()
-                    .requestMatchers("/**").permitAll() // TODO: remove this
                     .anyRequest().authenticated()
             }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }

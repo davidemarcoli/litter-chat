@@ -36,8 +36,12 @@ class AuthController(
 //        return ResponseEntity(user, HttpStatus.OK)
 //    }
 
-    @PostMapping("/signup") //TODO: duplicate email check
+    @PostMapping("/signup")
     fun signup(@RequestBody user: User): ResponseEntity<User> {
+        if (userRepository.findByEmail(user.email) != null) {
+            return ResponseEntity(HttpStatus.CONFLICT)
+        }
+
         // hash password
         val hashedPassword = passwordEncoder.encode(user.password)
         val userToSave = user.copy(password = hashedPassword)
