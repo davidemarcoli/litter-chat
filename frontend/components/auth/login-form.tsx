@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form"
 
 import * as z from "zod"
 import { useAuth } from "@/app/(contexts)/AuthenticationContext"
-import { redirect } from "next/navigation"
+import { useRouter } from "next/router"
 
 const formSchema = z.object({
     email: z.string().min(2).max(50).email("Invalid email address"),
@@ -31,6 +31,7 @@ interface LoginFormFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: LoginFormFormProps) {
     const {login} = useAuth();
+    const router = useRouter();
 
     // 1. Define your form.
         const form = useForm<z.infer<typeof formSchema>>({
@@ -48,7 +49,7 @@ export function LoginForm({ className, ...props }: LoginFormFormProps) {
         console.log(values)
 
         await login(values.email, values.password);
-        redirect("/");
+        router.push("/");
     }
 
     return (

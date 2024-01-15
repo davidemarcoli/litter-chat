@@ -47,7 +47,11 @@ export const AuthenticationContextProvider = ({
     console.log(accessToken);
     
     if (accessToken) {
+      console.log(JWTUtility.checkIfIsExpired(accessToken));
+      
       if (JWTUtility.checkIfIsExpired(accessToken)) {
+        setPrincipal(undefined);
+        CookieUtility.set(ACCESS_TOKEN, "");
         try {
           redirect("/login")
         } catch (error) {
