@@ -8,7 +8,8 @@ import {zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form"
 
 import * as z from "zod"
-import {signIn} from "next-auth/react";
+import { useAuth } from "@/app/(contexts)/AuthenticationContext"
+import AuthenticationService from "@/app/(services)/AuthenticationService"
 
 const formSchema = z.object({
     email: z.string().min(2).max(50).email("Invalid email address"),
@@ -19,7 +20,7 @@ interface SignupFormFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function SignupForm({className, ...props}: SignupFormFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const {login} = useAuth();
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof formSchema>>({
@@ -36,32 +37,10 @@ export function SignupForm({className, ...props}: SignupFormFormProps) {
         // ✅ This will be type-safe and validated.
         console.log(values)
 
-        setIsLoading(true)
 
-        fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(values)
-        }).then((res) => {
-            if (res.ok) {
-                return res.json()
-            }
-        }).then((data) => {
-            console.log(data)
-            signIn("credentials", {
-                email: values.email,
-                password: values.password,
-                callbackUrl: "/",
-            }).finally(() => {
-                setIsLoading(false)
-            });
-            return data
-        }).catch((err) => {
-            console.log(err)
-            return null
-        })
+       const data =  await AuthenticationService().signup({email: values.email, password: values.password});
+       console.log(data)
+       await login(values.email, values.password)
     }
 
     return (

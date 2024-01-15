@@ -85,11 +85,7 @@ const Chat = () => {
     };
 
     return (
-<<<<<<< HEAD
-        <div className="flex h-screen">
-=======
         <div className="flex" style={{height: "100vh"}}>
->>>>>>> main
             {/* Chats side bar*/}
             <div className="w-1/4 bg-PURPLE">
                 <ChatList matches={test_chats} onOpenChat={handleOpenChat}/>

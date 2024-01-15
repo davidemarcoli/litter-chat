@@ -2,6 +2,7 @@
 
 import {ThemeProvider} from '@/components/theme/theme-provider'
 import {NextUIProvider} from '@nextui-org/react'
+import { AuthenticationContextProvider } from './(contexts)/AuthenticationContext'
 
 export function Providers({children}: { children: React.ReactNode }) {
     return (
@@ -11,9 +12,11 @@ export function Providers({children}: { children: React.ReactNode }) {
             enableSystem
             disableTransitionOnChange
         >
+            <AuthenticationContextProvider>
             <NextUIProvider>
                 {children}
             </NextUIProvider>
+            </AuthenticationContextProvider>
         </ThemeProvider>
     )
 }
