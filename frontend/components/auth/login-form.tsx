@@ -19,7 +19,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
 import * as z from "zod"
-import {signIn} from "next-auth/react";
+import { useAuth } from "@/app/(contexts)/AuthenticationContext"
+import { redirect } from "next/navigation"
 
 const formSchema = z.object({
     email: z.string().min(2).max(50).email("Invalid email address"),
@@ -29,7 +30,7 @@ const formSchema = z.object({
 interface LoginFormFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function LoginForm({ className, ...props }: LoginFormFormProps) {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false)
+    const {login} = useAuth();
 
     // 1. Define your form.
         const form = useForm<z.infer<typeof formSchema>>({
@@ -46,15 +47,8 @@ export function LoginForm({ className, ...props }: LoginFormFormProps) {
         // ✅ This will be type-safe and validated.
         console.log(values)
 
-        setIsLoading(true)
-
-        signIn("credentials", {
-            email: values.email,
-            password: values.password,
-            callbackUrl: "/",
-        }).finally(() => {
-            setIsLoading(false)
-        });
+        await login(values.email, values.password);
+        redirect("/");
     }
 
     return (

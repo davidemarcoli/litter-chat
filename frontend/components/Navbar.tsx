@@ -1,12 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import {options} from "@/app/api/auth/[...nextauth]/options";
-import {getServerSession} from "next-auth/next";
 import {ModeToggle} from "@/components/theme/mode-toggle";
 
 const Navbar = async () => {
 
-    const session = await getServerSession(options)
 
     return (
         <div
@@ -27,9 +24,9 @@ const Navbar = async () => {
             <div className="hidden md:flex gap-4 items-center justify-end flex-1">
                 <ModeToggle/>
                 {/* Update Navbar based on role*/}
-                {!session?.user ? (
+                {/*!session?.user*/ false ? (
                     <Link href="/api/auth/signin?callbackUrl=%2F">Login</Link>
-                ) : (<p>You are logged in ({session.user.email})</p>)}
+                ) : (<p>You are logged in ({"PLACEHOLDER"})</p>)}
             </div>
         </div>
     );

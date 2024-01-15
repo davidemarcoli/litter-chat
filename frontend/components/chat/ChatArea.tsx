@@ -7,15 +7,12 @@ import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
 import {Chip} from "@nextui-org/react";
 import {ChatAreaProps, ChatMessageType, UserType} from '../types/types';
-import {useSession} from "next-auth/react";
 
 const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
     const [messages, setMessages] = useState<ChatMessageType[]>(currentChannel.chatMessages);
 
-    const session = useSession()
 
     const handleSendMessage = (newMessage: ChatMessageType) => {
-        console.log(session)
 
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);

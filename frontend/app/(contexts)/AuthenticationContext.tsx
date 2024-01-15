@@ -30,6 +30,8 @@ export const AuthenticationContextProvider = ({
   const extractAndSetPrincipalAndTokens = (access_token: string) => {
     CookieUtility.set(ACCESS_TOKEN, access_token);
     const payload = JWTUtility.decodePayload(access_token);
+    console.log(payload);
+    
     setPrincipal({
       id: payload.sub,
     });
@@ -42,9 +44,15 @@ export const AuthenticationContextProvider = ({
 
   const authenticate = async () => {
     const accessToken = CookieUtility.get(ACCESS_TOKEN);
+    console.log(accessToken);
+    
     if (accessToken) {
       if (JWTUtility.checkIfIsExpired(accessToken)) {
-        redirect("/login")
+        try {
+          redirect("/login")
+        } catch (error) {
+          
+        }
       } else {
         extractAndSetPrincipalAndTokens(accessToken);
       }

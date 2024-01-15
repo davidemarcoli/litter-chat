@@ -38,7 +38,7 @@ class SecurityConfig {
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .cors(withDefaults()) // Allow CORS from any origin
+            .cors { cors -> cors.disable() } // Allow CORS from any origin
             .csrf { csrf -> csrf.disable() } // Disable CSRF protection
             .authorizeHttpRequests { authz ->
                 authz
@@ -57,9 +57,15 @@ class SecurityConfig {
     @Bean
     fun corsConfigurationSource(): CorsConfigurationSource {
         val configuration = CorsConfiguration()
-        configuration.allowedOrigins = listOf("*") // Allow all origins
+        /*
+        configuration.addAllowedOrigins = listOf("*") // Allow all origins
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS") // Allow all methods
-        configuration.allowedHeaders = listOf("*") // Allow all headers
+        configuration.allowedHeaders = listOf("*") // Allow all headers*/
+
+        configuration.addAllowedOrigin("*")
+        configuration.addAllowedHeader("*")
+        configuration.addAllowedMethod("*")
+
 
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)

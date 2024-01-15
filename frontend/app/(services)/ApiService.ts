@@ -4,10 +4,12 @@ import CookieUtility from "../(utils)/CookieUtility";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  headers: {"Access-Control-Allow-Origin": "*"}
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
+    
     const token = CookieUtility.get(ACCESS_TOKEN);
     if (token) {
       // Make sure config and config.headers aren't undefined to not anger the
@@ -37,6 +39,8 @@ const ApiService = {
     }
   },
   async post(url: string, data: unknown) {
+    console.log(process.env.NEXT_PUBLIC_BACKEND_URL);
+    
     try {
       return await axiosInstance
       .post(url, data);
