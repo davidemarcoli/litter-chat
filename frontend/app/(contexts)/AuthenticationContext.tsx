@@ -12,7 +12,7 @@ type AuthenticationProviderProps = {
 
 export type AuthenticationContextProps = {
   principal: Principal | undefined;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 };
 
@@ -59,9 +59,9 @@ export const AuthenticationContextProvider = ({
     }
   };
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     const data = await AuthenticationService()
-      .login(username, password);
+      .login(email, password);
     return extractAndSetPrincipalAndTokens(data);
   };
 
