@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@CrossOrigin
 @RequestMapping("/user")
 class UserController(private val userRepository: UserRepository) {
     @GetMapping("profile/{username}")

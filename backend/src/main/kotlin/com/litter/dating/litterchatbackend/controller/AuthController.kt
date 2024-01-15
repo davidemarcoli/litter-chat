@@ -51,7 +51,8 @@ class AuthController(
         val authentication: Authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 authRequest.email,
-                authRequest.password
+                authRequest.password,
+                listOf()
             )
         )
         return if (authentication.isAuthenticated) {
@@ -59,5 +60,6 @@ class AuthController(
         } else {
             throw UsernameNotFoundException("invalid user request !")
         }
+
     }
 }
