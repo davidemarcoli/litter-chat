@@ -6,11 +6,9 @@ import ApiService from './ApiService'
 const baseURL = "/auth/"
 
 const AuthenticationService = () => ({
-  login: async (username:string, password: string) => {
-      const params = new URLSearchParams();
-      params.append("username", username);
-      params.append("password", password);
-      const {data} = await ApiService.post(baseURL + "login", params);
+  login: async (email:string, password: string) => {
+
+      const {data} = await ApiService.post(baseURL + "login", {email: email, password: password});
       return data;
   },
   requestNewToken: async () => {

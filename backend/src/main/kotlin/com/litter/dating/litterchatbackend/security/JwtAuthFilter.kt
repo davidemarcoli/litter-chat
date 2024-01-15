@@ -50,5 +50,9 @@ class JwtAuthFilter : OncePerRequestFilter() {
         }
         filterChain.doFilter(request, response)
     }
+
+    override fun shouldNotFilter(request: HttpServletRequest): Boolean {
+        return request.servletPath.startsWith("/auth")
+    }
 }
 
