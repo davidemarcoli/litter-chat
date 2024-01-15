@@ -1,35 +1,47 @@
-
 /**
  * Component prop structs require the ending "...Props".
  * Basic structs require the ending "Type".
  */
 
 // Component PROPS:
-interface ChatListProps {
-    matches: UserType[], // bin faul gsi... es isch 00:53 uhr
-    onOpenChat: (chatUser: any) => void;
+interface ChannelListProps {
+    channels: ChannelType[], // bin faul gsi... es isch 00:53 uhr
+    onOpenChannel: (chatUser: any) => void;
 }
 
 interface ChatAreaProps {
-  currentChat: any  // TODO(sascha): Added this as a quick fix.
+    currentChannel: ChannelType  // TODO(sascha): Added this as a quick fix.
+    onSendMessage: (newMessage: ChatMessageType) => void;
 }
 
 
 // Basic types:
-interface MessageType {
-    content: string 
-    timestamp: string 
-    isUser: boolean
+interface ChatMessageType {
+    content: string
+    sender: UserType
+    channel: ChannelType
+    createdAt: Date
+}
+
+interface ChannelType {
+    id: number
+    members: UserType[]
+    chatMessages: ChatMessageType[]
 }
 
 interface UserType {
-  id: number // UUID in the future
-  name: string
-  lastMessage: string
-  // avatar img url
-  url: string
+    id: string
+    email: string
+    profile: ProfileType
 }
 
+interface ProfileType {
+    id: string,
+    name: string,
+    bio: string,
+    imageUrl: string,
+    createdAt: Date,
+    updatedAt: Date
+}
 
-
-export type { ChatListProps, ChatAreaProps, MessageType, UserType };
+export type {ChannelListProps, ChatAreaProps, ChatMessageType, ChannelType, UserType, ProfileType};

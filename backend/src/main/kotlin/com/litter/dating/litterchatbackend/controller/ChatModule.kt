@@ -4,7 +4,7 @@ import com.corundumstudio.socketio.*
 import com.corundumstudio.socketio.listener.ConnectListener
 import com.corundumstudio.socketio.listener.DataListener
 import com.corundumstudio.socketio.listener.DisconnectListener
-import com.litter.dating.litterchatbackend.model.ChatMessage
+import com.litter.dating.litterchatbackend.model.entity.ChatMessage
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

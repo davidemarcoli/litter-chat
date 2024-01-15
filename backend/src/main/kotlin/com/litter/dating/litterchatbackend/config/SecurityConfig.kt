@@ -1,12 +1,21 @@
 package com.litter.dating.litterchatbackend.config
 
+import com.litter.dating.litterchatbackend.security.JwtAuthFilter
+import com.litter.dating.litterchatbackend.service.UserDetailsServiceImpl
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer.withDefaults
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
@@ -14,6 +23,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 class SecurityConfig {
+
+
+    @Autowired
+    private val authFilter: JwtAuthFilter? = null
+
+    // User Creation
+    @Bean
+    fun userDetailsService(): UserDetailsService {
+        return UserDetailsServiceImpl()
+    }
+
     @Bean
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -23,9 +43,14 @@ class SecurityConfig {
             .authorizeHttpRequests { authz ->
                 authz
                     .requestMatchers("/auth/*").permitAll()
+                    .requestMatchers("/**").permitAll() // TODO: remove this
                     .anyRequest().authenticated()
             }
+            .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter::class.java)
             .httpBasic(withDefaults())
+
         return http.build()
     }
 
@@ -39,5 +64,24 @@ class SecurityConfig {
         val source = UrlBasedCorsConfigurationSource()
         source.registerCorsConfiguration("/**", configuration)
         return source
+    }
+
+    @Bean
+    fun passwordEncoder(): BCryptPasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    fun authenticationProvider(): AuthenticationProvider {
+        val authenticationProvider = DaoAuthenticationProvider()
+        authenticationProvider.setUserDetailsService(userDetailsService())
+        authenticationProvider.setPasswordEncoder(passwordEncoder())
+        return authenticationProvider
+    }
+
+    @Bean
+    @Throws(java.lang.Exception::class)
+    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager {
+        return config.getAuthenticationManager()
     }
 }

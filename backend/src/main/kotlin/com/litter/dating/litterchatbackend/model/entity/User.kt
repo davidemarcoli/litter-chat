@@ -8,8 +8,8 @@ import java.time.LocalDateTime
 data class User(
     @Id
     val id: String? = null,
-    val email: String,
-    private val password: String,
+    val email: String = "",
+    private val password: String = "",
     val enabled: Boolean = true,
     val accountNonExpired: Boolean = true,
     val accountNonLocked: Boolean = true,
@@ -44,5 +44,9 @@ data class User(
 
     override fun getPassword(): String {
         return password
+    }
+
+    fun setPassword(password: String): User {
+        return this.copy(password = password)
     }
 }

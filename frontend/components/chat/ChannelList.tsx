@@ -3,20 +3,29 @@
 import React, {useEffect, useState} from "react";
 import {Badge, Avatar, Button as NextUIButton, Image } from "@nextui-org/react";
 import Link from "next/link";
-import { ChatListProps, UserType } from "../types/types";
+import { ChannelListProps, UserType } from "../types/types";
 import {Button} from "@/components/ui/button";
 
-const ChatList = ({matches, onOpenChat}: ChatListProps) => {
+const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
-    const handleItemClick = (chatUser: UserType) => {
-      setSelectedItem(chatUser.id);
+    const handleItemClick = (index: number) => {
+      setSelectedItem(index);
       // Open chat field
-      onOpenChat(chatUser)
+      onOpenChannel(channels[index]);
     };
 
     useEffect(() => {
     }, [selectedItem])
+
+    const getUserForChat = (users: UserType[]) => {
+        const user = users.find((user) => user.id !== "1"); // TODO: replace with current user
+        if (!user) {
+            return users[0];
+        } else {
+            return user;
+        }
+    }
     
     return (
           <div className="bg-PURPLE text-white relative">
@@ -47,9 +56,9 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
               <h2 className="font-bold">Matches</h2>
             </div>
               <ul className="space-y-2 px-2">
-                {matches.map((item: UserType, index) => (
-                  <li key={index} onClick={() => handleItemClick(item)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
-                  ${selectedItem === item.id ? 'bg-DARK_PURPLE' : ''}`}>
+                {channels.map((item, index) => (
+                  <li key={index} onClick={() => handleItemClick(index)} className={`hover:bg-SELECTED_PURPLE p-4 rounded cursor-pointer
+                  ${selectedItem === index ? 'bg-DARK_PURPLE' : ''}`}>
                     <div className="flex flex-row">
                       {/*<div className="flex-none">*/}
                       {/*<Badge content="5" className="bg-orange-400">*/}
@@ -58,12 +67,12 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
                           {/*  size="lg"*/}
                           {/*  src={item.url}*/}
                           {/*/>*/}
-                          <Image width={50} height={50} src={item.url}></Image>
+                          <Image width={50} height={50} src={getUserForChat(item.members).profile?.imageUrl}></Image>
                       {/*</Badge>*/}
                       {/*</div>*/}
                       <div className="flex-col px-4">
-                        <p className="font-bold">{item.name}</p>
-                        <p className="text-sm text-gray-400">{item.lastMessage}</p>
+                        <p className="font-bold">{getUserForChat(item.members).profile?.name}</p>
+                        <p className="text-sm text-gray-400">{getUserForChat(item.members).profile?.bio}</p>
                       </div>
                     </div>
                   </li>
@@ -73,4 +82,4 @@ const ChatList = ({matches, onOpenChat}: ChatListProps) => {
       );
 };
 
-export default ChatList
+export default ChannelList

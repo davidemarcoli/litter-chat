@@ -25,29 +25,49 @@ export const options: NextAuthOptions = {
         CredentialsProvider({
             name: "Credentials",
             credentials: {
-                username: {label: "Username", type: "text", placeholder: "username 🦹"},
+                email: {label: "Email", type: "email", placeholder: "email 🦹"},
                 password: {label: "Password", type: "password", placeholder: "password 😼"}
             },
             async authorize(credentials) {
-                return fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", {
+                const res = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/token", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify(credentials)
-                }).then((res) => {
-                    if (res.ok) {
-                        return res.json()
-                    }
-                }).then((data) => {
-                    console.log("Data", data)
-                    data.name = data.profile?.name;
-                    console.log("Modified Data", data)
-                    return data
-                }).catch((err) => {
-                    console.log(err)
-                    return null
+                    body: JSON.stringify({
+                        email: credentials?.email,
+                        password: credentials?.password
+                    })
                 })
+
+                if (!res.ok) {
+                    return null
+                }
+
+                const data = await res.text();
+                console.log("Data", data)
+
+                return data
+
+                // return fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/auth/login", {
+                //     method: "POST",
+                //     headers: {
+                //         "Content-Type": "application/json"
+                //     },
+                //     body: JSON.stringify(credentials)
+                // }).then((res) => {
+                //     if (res.ok) {
+                //         return res.json()
+                //     }
+                // }).then((data) => {
+                //     console.log("Data", data)
+                //     data.name = data.profile?.name;
+                //     console.log("Modified Data", data)
+                //     return data
+                // }).catch((err) => {
+                //     console.log(err)
+                //     return null
+                // })
 
                 // Hard coded for simplicity and proof of concept
                 // const user = {id: "1", name: "admin", email: "jsmith@example.com", password: "admin", role: "user"}
