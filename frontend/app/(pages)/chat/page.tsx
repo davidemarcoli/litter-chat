@@ -6,6 +6,7 @@ import {useEffect, useState} from "react"
 import {io} from "socket.io-client";
 import {ChannelType, UserType} from "@/components/types/types";
 import {Button} from "@/components/ui/button";
+import ApiService from "@/app/(services)/ApiService";
 
 // const test_chats: UserType[] = [
 //     {
@@ -107,20 +108,20 @@ import {Button} from "@/components/ui/button";
 //     }
 // ]
 
-const webSocketUrl = "ws://localhost:8085/chat?token=123";
-const socket = io(webSocketUrl);
-socket.on("connect", () => {
-    console.log("Connected to server");
-});
-socket.on("disconnect", () => {
-    console.log("Disconnected from server");
-});
-socket.on("chat", (message: any) => {
-    console.log("New message", message);
-});
-socket.on("reconnect_attempt", () => {
-    console.log("Reconnecting to server");
-});
+// const webSocketUrl = "ws://localhost:8085/chat?token=123";
+// const socket = io(webSocketUrl);
+// socket.on("connect", () => {
+//     console.log("Connected to server");
+// });
+// socket.on("disconnect", () => {
+//     console.log("Disconnected from server");
+// });
+// socket.on("chat", (message: any) => {
+//     console.log("New message", message);
+// });
+// socket.on("reconnect_attempt", () => {
+//     console.log("Reconnecting to server");
+// });
 
 const Chat = () => {
     // bin faul gsi... es isch 00:53 uhr
@@ -136,16 +137,11 @@ const Chat = () => {
     };
 
     const handleSendMessage = (newMessage: any) => {
-        socket.emit("chat", newMessage);
+        //socket.emit("chat", newMessage);
     }
 
     const getChannels = () => {
-        fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/channel", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        }).then(r => r.json()).then(r => setChannels(r));
+        ApiService.get("/channel").then(r => setChannels(r.data))
     }
 
     const handleCRUDTest = () => {

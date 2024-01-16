@@ -1,14 +1,15 @@
 package com.litter.dating.litterchatbackend.security
 
+import com.litter.dating.litterchatbackend.model.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import java.security.Key
 import java.util.*
 import java.util.function.Function
+import javax.crypto.SecretKey
 
 
 @Component
@@ -33,7 +34,7 @@ class JwtService {
             return Keys.hmacShaKeyFor(keyBytes)
         }
 
-    fun extractUsername(token: String?): String {
+    fun extractSubject(token: String?): String {
         return extractClaim(token) { obj: Claims -> obj.subject }
     }
 
@@ -47,8 +48,8 @@ class JwtService {
     }
 
     private fun extractAllClaims(token: String?): Claims {
-
-        return Jwts.parser().build().parseSignedClaims(token).payload;
+        println("extractAllClaims($token)")
+        return Jwts.parser().verifyWith(getSecretKey()).build().parseSignedClaims(token).payload;
 
 //        return Jwts
 //            .parserBuilder()
@@ -62,13 +63,18 @@ class JwtService {
         return extractExpiration(token).before(Date())
     }
 
-    fun validateToken(token: String?, userDetails: UserDetails): Boolean {
-        val username = extractUsername(token)
-        return username == userDetails.username && !isTokenExpired(token)
+    fun validateToken(token: String?, user: User): Boolean {
+        val id = extractSubject(token)
+        return id == user.id && !isTokenExpired(token)
     }
 
     companion object {
         const val SECRET = "5367566B59703373367639792F423F4528482B4D6251655468576D5A71347437"
+    }
+
+    fun getSecretKey(): SecretKey {
+        val keyBytes = Decoders.BASE64.decode(SECRET)
+        return Keys.hmacShaKeyFor(keyBytes)
     }
 }
 

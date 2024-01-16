@@ -1,6 +1,7 @@
 package com.litter.dating.litterchatbackend.model.entity
 
 import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
@@ -16,6 +17,7 @@ data class User(
     val credentialsNonExpired: Boolean = true,
     val createdAt: LocalDateTime = LocalDateTime.now(),
     val updatedAt: LocalDateTime = LocalDateTime.now(),
+    @DBRef
     val profile: Profile? = null
 ) : UserDetails {
     override fun getAuthorities(): Collection<GrantedAuthority> {
@@ -48,5 +50,9 @@ data class User(
 
     fun setPassword(password: String): User {
         return this.copy(password = password)
+    }
+
+    fun setProfile(profile: Profile): User {
+        return this.copy(profile = profile)
     }
 }

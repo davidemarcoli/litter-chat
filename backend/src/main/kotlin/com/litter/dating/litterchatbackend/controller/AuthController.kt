@@ -52,9 +52,12 @@ class AuthController(
 
     @PostMapping("/login")
     fun authenticateAndGetToken(@RequestBody authRequest: AuthRequest): String {
+        val user = userRepository.findByEmail(authRequest.email)
+            ?: throw UsernameNotFoundException("invalid user request !")
+
         val authentication: Authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
-                authRequest.email,
+                user.id,
                 authRequest.password,
                 listOf()
             )

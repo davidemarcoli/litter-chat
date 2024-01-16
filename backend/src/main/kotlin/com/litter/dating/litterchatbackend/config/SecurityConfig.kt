@@ -38,11 +38,12 @@ class SecurityConfig {
     @Throws(Exception::class)
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http
-            .cors { cors -> cors.disable() } // Allow CORS from any origin
+            .cors(withDefaults())
             .csrf { csrf -> csrf.disable() } // Disable CSRF protection
             .authorizeHttpRequests { authz ->
                 authz
                     .requestMatchers("/auth/*").permitAll()
+                    .requestMatchers("/**").permitAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement { session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
@@ -70,6 +71,17 @@ class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration)
         return source
     }
+
+//    @Bean
+//    fun corsConfigurationSource(): CorsConfigurationSource {
+//        val configuration = CorsConfiguration()
+//        configuration.allowedOrigins = Arrays.asList("*")
+//        configuration.setAllowedMethods(Arrays.asList("*"))
+//        configuration.allowedHeaders = Arrays.asList("*")
+//        val source = UrlBasedCorsConfigurationSource()
+//        source.registerCorsConfiguration("/**", configuration)
+//        return source
+//    }
 
     @Bean
     fun passwordEncoder(): BCryptPasswordEncoder {
