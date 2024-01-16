@@ -4,7 +4,7 @@ import CookieUtility from "../(utils)/CookieUtility";
 
 const axiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
-  headers: {"Access-Control-Allow-Origin": "*"}
+  headers: {"Access-Control-Allow-Origin": "*", 'Access-Control-Allow-Credentials': 'true'}
 });
 
 axiosInstance.interceptors.request.use(
