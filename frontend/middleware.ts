@@ -5,13 +5,13 @@ import { ACCESS_TOKEN } from "./app/(constants)/Cookies";
 import JWTUtility from "./app/(utils)/JWTUtility";
 
 export function middleware(request: NextRequest) {
-  const accessToken = CookieUtility.get(ACCESS_TOKEN);
+  const accessToken = request.cookies.get(ACCESS_TOKEN)?.value
   if (
     !accessToken ||
     accessToken === "" ||
     JWTUtility.checkIfIsExpired(accessToken)
   ) {
-    CookieUtility.set(ACCESS_TOKEN, "");
+    request.cookies.set(ACCESS_TOKEN, "")
     return NextResponse.redirect(new URL("/login", request.url));  
 }
 }
