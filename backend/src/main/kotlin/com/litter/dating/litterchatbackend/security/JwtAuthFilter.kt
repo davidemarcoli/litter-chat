@@ -1,5 +1,6 @@
 package com.litter.dating.litterchatbackend.security
 
+import com.litter.dating.litterchatbackend.model.entity.User
 import jakarta.servlet.FilterChain
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
@@ -35,14 +36,22 @@ class JwtAuthFilter : OncePerRequestFilter() {
     ) {
         val authHeader = request.getHeader("Authorization")
         var token: String? = null
-        var username: String? = null
+        var userId: String? = null
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            token = authHeader.substring(7)
-            username = jwtService!!.extractUsername(token)
+            println("authHeader: $authHeader")
+            token = authHeader.substring(7).trim()
+            userId = jwtService!!.extractSubject(token)
+            println("token: $token")
+            println("username: $userId")
         }
-        if (username != null && SecurityContextHolder.getContext().authentication == null) {
-            val userDetails: UserDetails = userDetailsService!!.loadUserByUsername(username)
-            if (jwtService!!.validateToken(token, userDetails)) {
+        if (userId != null && SecurityContextHolder.getContext().authentication == null) {
+            val userDetails: UserDetails = userDetailsService!!.loadUserByUsername(userId)
+
+            val user: User = userDetails as User
+
+            println("Token valid: " + jwtService!!.validateToken(token, user))
+
+            if (jwtService!!.validateToken(token, user)) {
                 val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
                 SecurityContextHolder.getContext().authentication = authToken
