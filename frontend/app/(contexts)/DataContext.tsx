@@ -25,12 +25,16 @@ export const DataContextProvider = ({
   const {principal} = useAuth();
 
   const loadProfile = async () => {
-    setProfile(principal && await UserService.getProfile(principal.id));
+    const value = principal && (await UserService.getProfile(principal.id)).data;
+    console.log(value);
+    
+    setProfile(value);
   }
 
   useEffect( () => {
-    loadProfile().then(() => console.log(profile))
+    console.log("principal", principal);
     
+    loadProfile().then(() => console.log("profile", profile))
   }, [principal])
 
   return (
