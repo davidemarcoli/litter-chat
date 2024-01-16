@@ -24,7 +24,7 @@ interface ChatMessageType {
 }
 
 interface ChannelType {
-    id: number
+    id: string
     members: UserType[]
     chatMessages: ChatMessageType[]
 }

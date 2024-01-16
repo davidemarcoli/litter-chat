@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.context.annotation.DependsOn
 import org.springframework.stereotype.Component
 
-//@Component // TODO: uncomment this line to enable SocketIO server
+@Component // TODO: uncomment this line to enable SocketIO server
 class ServerCommandLineRunner @Autowired constructor(private val server: SocketIOServer) : CommandLineRunner {
     @Throws(Exception::class)
     override fun run(vararg args: String) {
