@@ -1,8 +1,24 @@
 "use client"
 
-const Error = () => {
+import { useEffect } from 'react'
+
+const Error = ({
+    error,
+    reset,
+  }: {
+    error: Error & { digest?: string }
+    reset: () => void
+  }) => {
+
+    useEffect(() => {
+        console.log(error)
+    }, [error])
+    
     return (
-        <div>Error..... bummer</div>
+        <div>
+            <h2>Something went wrong</h2>
+            <button onClick={() => reset()}>Try again</button>
+        </div>
     );
   };
   

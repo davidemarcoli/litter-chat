@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import { Image } from '@nextui-org/react'
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -84,7 +85,7 @@ const ProfileForm = () => {
             <FormItem>
               <FormLabel>Image</FormLabel>
               <FormControl>
-                <img src={field.value}/>
+                <Image className="h-[80vh]" src={field.value}/>
               </FormControl>
               <FormDescription>
                 blah blah blah

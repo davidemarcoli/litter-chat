@@ -14,7 +14,6 @@ interface ChatAreaProps {
     onSendMessage: (newMessage: ChatMessageType) => void;
 }
 
-
 // Basic types:
 interface ChatMessageType {
     content: string
