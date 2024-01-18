@@ -4,7 +4,7 @@ import LitterCardsActionButton from './LitterCardsActionButton';
 import { Info, MoveDown, GraduationCap, UserRound } from 'lucide-react';
 import React, { useState } from 'react';
 import './ExpansionAnimation.css';
-import { LookingFor, ProfileType } from '../types/types';
+import { ProfileType } from '../types/types';
 import LookingForCard from './LookingForCard';
 
 const LitterCards = () => {
