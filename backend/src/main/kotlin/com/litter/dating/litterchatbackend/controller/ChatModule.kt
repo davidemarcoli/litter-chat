@@ -7,49 +7,70 @@ import com.corundumstudio.socketio.SocketIOServer
 import com.corundumstudio.socketio.listener.ConnectListener
 import com.corundumstudio.socketio.listener.DataListener
 import com.corundumstudio.socketio.listener.DisconnectListener
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.litter.dating.litterchatbackend.model.entity.Channel
 import com.litter.dating.litterchatbackend.model.entity.ChatMessage
-import com.litter.dating.litterchatbackend.model.entity.User
+import com.litter.dating.litterchatbackend.repository.ChannelRepository
+import com.litter.dating.litterchatbackend.repository.ChatMessageRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.util.*
 
-
-class ConnectedSocketInfo(
-    val sessionId: UUID,
-    val userId: String,
-    val channel: String
-)
-
 @Component
-class ChatModule @Autowired constructor(server: SocketIOServer) {
+class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: ObjectMapper, chatMessageRepository: ChatMessageRepository, channelRepository: ChannelRepository) {
+
+    class ConnectedSocketInfo(
+        val sessionId: UUID,
+        val userId: String,
+        val channel: String
+    )
+
     private val namespace: SocketIONamespace = server.addNamespace("/chat")
 
     private val onlineChannelMembers: MutableMap<String, MutableSet<ConnectedSocketInfo>> = mutableMapOf()
 
+    private val objectMapper: ObjectMapper = objectMapper
+
+    private val chatMessageRepository: ChatMessageRepository = chatMessageRepository
+
+    private val channelRepository: ChannelRepository = channelRepository
+
     init {
         namespace.addConnectListener(onConnected())
         namespace.addDisconnectListener(onDisconnected())
-        namespace.addEventListener("chat", ChatMessage::class.java, onChatReceived())
+        // TODO: Use a custom class instead of String (NEEDS FIXING OF JSON SERIALIZATION)
+        namespace.addEventListener("chat", String::class.java, onChatReceived())
     }
 
-    private fun onChatReceived(): DataListener<ChatMessage> {
-        return DataListener { client: SocketIOClient, data: ChatMessage?, ackSender: AckRequest? ->
+    private fun onChatReceived(): DataListener<String> {
+        return DataListener { client: SocketIOClient, data: String, ackSender: AckRequest ->
             log.debug(
                 "Client[{}] - Received chat message '{}'",
                 client.sessionId.toString(),
                 data
             )
 
-            val channel = client.handshakeData.getSingleUrlParam("channelId")
+            val message = objectMapper.readValue(data, ChatMessage::class.java)
+            println(message)
+
+
+            val savedMessage = chatMessageRepository.save(message)
+            println(savedMessage)
+
+//            val channelId = client.handshakeData.getSingleUrlParam("channelId")
+            val channel: Channel = channelRepository.findById(message.channel.id!!).get()
+            channel.chatMessages.add(savedMessage)
+            channelRepository.save(channel)
+
+
             val userId = client.handshakeData.getSingleUrlParam("userId")
-            if (onlineChannelMembers.containsKey(channel)) {
-                for (member in onlineChannelMembers[channel]!!) {
-                    if (member.userId == userId) {
+            if (onlineChannelMembers.filter { it.key == channel.id }.isNotEmpty()) {
+                for (member in onlineChannelMembers[channel.id]!!) {
+                    if (member.userId != userId) {
                         namespace.getClient(member.sessionId)?.sendEvent(
-                            "chat", data
+                            "chat", objectMapper.writeValueAsString(savedMessage)
                         )
                     }
                 }
@@ -99,6 +120,11 @@ class ChatModule @Autowired constructor(server: SocketIOServer) {
             }
         }
     }
+
+//    private fun getIpByClient(client: SocketIOClient): String {
+//        val sa = client.remoteAddress.toString()
+//        return sa.substring(1, sa.indexOf(":"))
+//    }
 
     companion object {
         private val log: Logger = LoggerFactory.getLogger(ChatModule::class.java)

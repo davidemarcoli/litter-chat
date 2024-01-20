@@ -6,7 +6,7 @@
 // Component PROPS:
 interface ChannelListProps {
     channels: ChannelType[], // bin faul gsi... es isch 00:53 uhr
-    onOpenChannel: (chatUser: any) => void;
+    onOpenChannel: (index: number) => void;
 }
 
 interface ChatAreaProps {

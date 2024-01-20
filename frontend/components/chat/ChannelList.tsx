@@ -12,7 +12,7 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     const handleItemClick = (index: number) => {
       setSelectedItem(index);
       // Open chat field
-      onOpenChannel(channels[index]);
+      onOpenChannel(index);
     };
 
     useEffect(() => {

@@ -4,7 +4,7 @@ import ChannelList from "@/components/chat/ChannelList"
 import ChatArea from "@/components/chat/ChatArea"
 import {useEffect, useState} from "react"
 import {io, Socket} from "socket.io-client";
-import {ChannelType, UserType} from "@/components/types/types";
+import {ChannelType, ChatMessageType} from "@/components/types/types";
 import {Button} from "@/components/ui/button";
 import ApiService from "@/app/(services)/ApiService";
 import {useAuth} from "@/app/(contexts)/AuthenticationContext";
@@ -25,9 +25,6 @@ function connect(channelId: string, userId: string) {
     socket.on("disconnect", () => {
         console.log("Disconnected from server");
     });
-    socket.on("chat", (message: any) => {
-        console.log("New message", message);
-    });
     socket.on("reconnect_attempt", () => {
         console.log("Reconnecting to server");
     });
@@ -35,8 +32,8 @@ function connect(channelId: string, userId: string) {
 
 const Chat = () => {
     // bin faul gsi... es isch 00:53 uhr
-    const [selectedChannel, setSelectedChannel] = useState<ChannelType | undefined>(undefined);
-    const [channels, setChannels] = useState([]);
+    const [selectedChannelIndex, setSelectedChannelIndex] = useState<number>(-1);
+    const [channels, setChannels] = useState<ChannelType[]>([]);
 
     const auth = useAuth();
 
@@ -44,13 +41,46 @@ const Chat = () => {
         getChannels();
     }, []);
 
-    const handleOpenChannel = (channel: ChannelType) => {
-        setSelectedChannel(channel);
+    const handleOpenChannel = (channelIndex: number) => {
+        setSelectedChannelIndex(channelIndex);
+        const channel = channels[channelIndex];
         connect(channel.id, auth.principal?.id!);
+        socket?.on("chat", (message: any) => {
+
+            console.log("New message", message);
+            const newMessage: ChatMessageType = JSON.parse(message);
+
+            console.log("New message", newMessage);
+            let channel: ChannelType | undefined = channels.find((channel: ChannelType) => channel.id === newMessage.channel.id);
+            console.log("Channel", channel)
+
+            if (!channel) {
+                return;
+            }
+
+            // TODO: refactor this, it's a mess (WHY DO IS THE CHANNEL TYPE NOT BEING INFERRED CORRECTLY???)
+
+            channel = channel as ChannelType;
+            channel.chatMessages = channel.chatMessages || [];
+            channel.chatMessages = [...channel.chatMessages, newMessage];
+            // setSelectedChannel(channel);
+            console.log("New channel", channel)
+            const updatedChannels = channels.map((channel: ChannelType) => {
+                if (channel.id === newMessage.channel.id) {
+                    return channel;
+                } else {
+                    return channel;
+                }
+            });
+            console.log("Updated channels", updatedChannels)
+            // WHY DOESN'T THAT TRIGGER A RE-RENDER? The new message is not being displayed
+            setChannels(updatedChannels);
+        });
     };
 
-    const handleSendMessage = (newMessage: any) => {
-        socket!.emit("chat", newMessage);
+    const handleSendMessage = (newMessage: ChatMessageType) => {
+        newMessage.channel.chatMessages = [];
+        socket!.emit("chat", JSON.stringify(newMessage));
     }
 
     const getChannels = () => {
@@ -86,7 +116,8 @@ const Chat = () => {
 
             {/* Content Shelf */}
             <div className="w-3/4">
-                {selectedChannel && <ChatArea currentChannel={selectedChannel} onSendMessage={handleSendMessage}/>}
+                {selectedChannelIndex != -1 &&
+                    <ChatArea currentChannel={channels[selectedChannelIndex]} onSendMessage={handleSendMessage}/>}
             </div>
         </div>
     )

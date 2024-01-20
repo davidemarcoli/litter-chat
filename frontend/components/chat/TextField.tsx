@@ -3,7 +3,7 @@ import {Image} from "@nextui-org/react";
 import {ChatMessageType} from "@/components/types/types";
 
 interface SendButtonProps {
-    onSendMessage: (message: ChatMessageType) => void;
+    onSendMessage: (message: string) => void;
 }
 
 const RoundedTextBox: React.FC<SendButtonProps> = ({onSendMessage}) => {
@@ -12,27 +12,7 @@ const RoundedTextBox: React.FC<SendButtonProps> = ({onSendMessage}) => {
 
     const handleSend = () => {
         if (messageContent?.trim() !== "") {
-            onSendMessage({
-                content: messageContent,
-                createdAt: new Date(),
-                sender: {
-                    id: "1",
-                    email: "dasdasd",
-                    profile: {
-                        id: "1",
-                        name: "Sascha",
-                        bio: "I'm a cool guy",
-                        imageUrl: "https://i.pinimg.com/564x/ff/b9/3d/ffb93d28979429ce561317b54086023f.jpg",
-                        createdAt: new Date(),
-                        updatedAt: new Date()
-                    }
-                },
-                channel: {
-                    id: 1,
-                    members: [],
-                    chatMessages: []
-                }
-            })
+            onSendMessage(messageContent)
             setMessageContent("")
         }
     }
