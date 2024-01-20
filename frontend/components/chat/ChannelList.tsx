@@ -5,9 +5,12 @@ import {Badge, Avatar, Button as NextUIButton, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { ChannelListProps, UserType } from "../types/types";
 import {Button} from "@/components/ui/button";
+import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 
 const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
+
+    const auth = useAuth();
 
     const handleItemClick = (index: number) => {
       setSelectedItem(index);
@@ -19,11 +22,15 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     }, [selectedItem])
 
     const getUserForChat = (users: UserType[]) => {
-        const user = users.find((user) => user.id !== "1"); // TODO: replace with current user
-        if (!user) {
+        console.log(users)
+        console.log(auth.principal)
+        const notCurrentUsers = users.filter((user) => user.id !== auth.principal?.id);
+        if (notCurrentUsers.length === 0) {
+            console.log("No user found", users[0])
             return users[0];
         } else {
-            return user;
+            console.log("User found", notCurrentUsers)
+            return notCurrentUsers[0];
         }
     }
     

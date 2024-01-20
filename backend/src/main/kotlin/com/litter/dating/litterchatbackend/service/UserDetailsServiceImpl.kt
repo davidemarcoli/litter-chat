@@ -15,7 +15,7 @@ class UserDetailsServiceImpl: UserDetailsService {
 
     @Throws(UsernameNotFoundException::class)
     override fun loadUserByUsername(id: String): UserDetails {
-        println("UserDetailsServiceImpl.loadUserByUsername($id)")
+//        println("UserDetailsServiceImpl.loadUserByUsername($id)")
 //        return repository!!.findByEmail(id) ?: throw UsernameNotFoundException("User not found $id")
         return repository!!.findById(id).orElseThrow { UsernameNotFoundException("User not found $id") }
     }

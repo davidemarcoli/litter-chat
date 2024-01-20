@@ -19,14 +19,20 @@ class ProfileController {
     @Autowired
     private val profileRepository: ProfileRepository? = null
 
-    @GetMapping
-    fun createTest(): ResponseEntity<Profile> {
-        var user = userRepository!!.findById("65a6970a3f6c38606094dcb0").get()
+    class Test {
+        var id: String? = null
+        var name: String? = null
+    }
+
+    @PostMapping("create")
+    fun createTest(@RequestBody test: Test): ResponseEntity<Profile> {
+        var user = userRepository!!.findById(test.id!!).orElseThrow()
         var profile = Profile();
-        profile.name = "User 2"
+        profile.name = test.name
+        profile.bio = "I am " + test.name + "!"
         profile = profileRepository!!.save(profile)
         user = user.setProfile(profile)
-        user = userRepository!!.save(user)
+        user = userRepository.save(user)
         return ResponseEntity.ok(profile)
     }
 }
