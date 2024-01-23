@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import RoundedTextBox from './TextField';
 import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
@@ -14,6 +14,9 @@ const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
 
     const auth = useAuth();
 
+    useEffect(() => {
+        setMessages(currentChannel.chatMessages)
+    }, [currentChannel.chatMessages]);
 
     const handleSendMessage = (message: string) => {
         const newMessage: ChatMessageType = {} as ChatMessageType;
@@ -32,8 +35,6 @@ const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
 
     // TODO: this is a duplicate of the one in ChannelList.tsx
     const getUserForChat = (users: UserType[]) => {
-        console.log(users)
-        console.log(currentChannel)
         const user = users.find((user) => user.id !== auth.principal?.id); // TODO: replace with current user
         if (!user) {
             return users[0];

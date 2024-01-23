@@ -51,23 +51,22 @@ const Chat = () => {
             const newMessage: ChatMessageType = JSON.parse(message);
 
             console.log("New message", newMessage);
-            let channel: ChannelType | undefined = channels.find((channel: ChannelType) => channel.id === newMessage.channel.id);
-            console.log("Channel", channel)
+            let channelToUpdate: ChannelType | undefined = channels.find((channel: ChannelType) => channel.id === newMessage.channel.id);
+            console.log("Channel", channelToUpdate)
 
-            if (!channel) {
+            if (!channelToUpdate) {
                 return;
             }
 
             // TODO: refactor this, it's a mess (WHY DO IS THE CHANNEL TYPE NOT BEING INFERRED CORRECTLY???)
 
-            channel = channel as ChannelType;
-            channel.chatMessages = channel.chatMessages || [];
-            channel.chatMessages = [...channel.chatMessages, newMessage];
+            // channelToUpdate.chatMessages = channelToUpdate.chatMessages || [];
+            channelToUpdate.chatMessages = [...channelToUpdate.chatMessages, newMessage];
             // setSelectedChannel(channel);
-            console.log("New channel", channel)
+            console.log("New channel", channelToUpdate)
             const updatedChannels = channels.map((channel: ChannelType) => {
                 if (channel.id === newMessage.channel.id) {
-                    return channel;
+                    return channelToUpdate!;
                 } else {
                     return channel;
                 }
@@ -79,36 +78,17 @@ const Chat = () => {
     };
 
     const handleSendMessage = (newMessage: ChatMessageType) => {
-        newMessage.channel.chatMessages = [];
-        socket!.emit("chat", JSON.stringify(newMessage));
+        const copiedNewMessage: ChatMessageType = JSON.parse(JSON.stringify(newMessage));
+        copiedNewMessage.channel.chatMessages = [];
+        socket!.emit("chat", JSON.stringify(copiedNewMessage));
     }
 
     const getChannels = () => {
         ApiService.get("/channel").then(r => setChannels(r.data))
     }
 
-    const handleCRUDTest = () => {
-        fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/channel", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                members: [
-                    {
-                        id: "656f25dc20794c359caca047",
-                    },
-                    {
-                        id: "656f451cb81bd97b117ba3b4",
-                    }
-                ]
-            })
-        }).then(r => r.json()).then(r => console.log(r));
-    }
-
     return (
         <div className="flex" style={{height: "100vh"}}>
-            <Button onClick={handleCRUDTest}>Test</Button>
             {/* Chats side bar*/}
             <div className="w-1/4 bg-PURPLE">
                 <ChannelList channels={channels} onOpenChannel={handleOpenChannel}/>

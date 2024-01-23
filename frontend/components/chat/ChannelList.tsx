@@ -22,14 +22,10 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     }, [selectedItem])
 
     const getUserForChat = (users: UserType[]) => {
-        console.log(users)
-        console.log(auth.principal)
         const notCurrentUsers = users.filter((user) => user.id !== auth.principal?.id);
         if (notCurrentUsers.length === 0) {
-            console.log("No user found", users[0])
             return users[0];
         } else {
-            console.log("User found", notCurrentUsers)
             return notCurrentUsers[0];
         }
     }
