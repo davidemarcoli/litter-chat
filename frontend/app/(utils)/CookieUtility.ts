@@ -1,19 +1,19 @@
-import { cookies } from "next/headers";
+import { deleteCookie, getCookie, setCookie } from 'cookies-next';
 
 /**
  * CookieUtility is a wrapper class that can be used to interact with cookies.
  */
 class CookieUtility {
   public static set(name: string, value: string) {
-    cookies().set(name, value);
+    setCookie(name, value)
   }
 
   public static get(name: string): string | undefined {
-    return cookies().get(name)?.value
+    return getCookie(name)
   }
 
   public static remove(name: string) {
-    cookies().delete(name);
+    deleteCookie(name)
   }
 }
 

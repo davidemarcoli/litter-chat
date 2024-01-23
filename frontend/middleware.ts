@@ -10,7 +10,7 @@ export function middleware(request: NextRequest) {
     accessToken === "" ||
     JWTUtility.checkIfIsExpired(accessToken)
   ) {
-    request.cookies.set(ACCESS_TOKEN, "")
+    request.cookies.delete(ACCESS_TOKEN)
     return NextResponse.redirect(new URL("/login", request.url));  
 }
 }

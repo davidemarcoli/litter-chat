@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import {ModeToggle} from "@/components/theme/mode-toggle";
+import { useData } from "@/app/(contexts)/DataContext";
 
 const Navbar = async () => {
-
 
     return (
         <div
@@ -26,7 +26,7 @@ const Navbar = async () => {
                 {/* Update Navbar based on role*/}
                 {/*!session?.user*/ false ? (
                     <Link href="/api/auth/signin?callbackUrl=%2F">Login</Link>
-                ) : (<p>You are logged in ({"PLACEHOLDER"})</p>)}
+                ) : (<p>You are logged in ({"placeholder"})</p>)}
             </div>
         </div>
     );
