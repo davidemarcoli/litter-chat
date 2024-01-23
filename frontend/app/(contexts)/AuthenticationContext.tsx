@@ -5,6 +5,7 @@ import AuthenticationService from "../(services)/AuthenticationService";
 import CookieUtility from "../(utils)/CookieUtility";
 import JWTUtility from "../(utils)/JWTUtility";
 import { redirect } from 'next/navigation'
+import { NextRequest } from "next/server";
 
 type AuthenticationProviderProps = {
   children: React.ReactNode;

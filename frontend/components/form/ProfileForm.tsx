@@ -38,8 +38,7 @@ const profileFormSchema = z.object({
     .string()
     .max(30, {
       message: "Profession must not be longer than 30 characters.",
-    })
-    .nullable(),
+    }),
   looking_for: z
     .string({
       required_error: "Please select an option to display.",
