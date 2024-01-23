@@ -29,42 +29,34 @@ data class User @ConstructorProperties("id") constructor(
         return emptyList()
     }
 
-    @JsonIgnore
     override fun isEnabled(): Boolean {
         return enabled
     }
 
-    @JsonIgnore
     override fun getUsername(): String {
         return email
     }
 
-    @JsonIgnore
     override fun isCredentialsNonExpired(): Boolean {
         return credentialsNonExpired
     }
 
-    @JsonIgnore
     override fun isAccountNonExpired(): Boolean {
         return accountNonExpired
     }
 
-    @JsonIgnore
     override fun isAccountNonLocked(): Boolean {
         return accountNonLocked
     }
 
-    @JsonIgnore
     override fun getPassword(): String {
         return password
     }
 
-    @JsonIgnore
     fun setPassword(password: String): User {
         return this.copy(password = password)
     }
 
-    @JsonIgnore
     fun setProfile(profile: Profile): User {
         return this.copy(profile = profile)
     }

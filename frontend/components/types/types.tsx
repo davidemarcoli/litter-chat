@@ -12,6 +12,13 @@ interface ChannelListProps {
 interface ChatAreaProps {
     currentChannel: ChannelType  // TODO(sascha): Added this as a quick fix.
     onSendMessage: (newMessage: ChatMessageType) => void;
+    isUserInCurrentChannelOnline: boolean;
+}
+
+interface HeaderProps {
+    name: string,
+    avatarImg: string,
+    isOnline: boolean
 }
 
 
@@ -44,4 +51,4 @@ interface ProfileType {
     updatedAt: Date
 }
 
-export type {ChannelListProps, ChatAreaProps, ChatMessageType, ChannelType, UserType, ProfileType};
+export type {ChannelListProps, ChatAreaProps, HeaderProps, ChatMessageType, ChannelType, UserType, ProfileType};

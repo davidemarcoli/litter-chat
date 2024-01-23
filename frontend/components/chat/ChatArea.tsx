@@ -9,7 +9,7 @@ import {Chip} from "@nextui-org/react";
 import {ChatAreaProps, ChatMessageType, UserType} from '../types/types';
 import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 
-const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
+const ChatArea = ({currentChannel, onSendMessage, isUserInCurrentChannelOnline}: ChatAreaProps) => {
     const [messages, setMessages] = useState<ChatMessageType[]>(currentChannel.chatMessages);
 
     const auth = useAuth();
@@ -48,7 +48,7 @@ const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
        
         {/* Chat header */}
         <div className="w-full sticky top-0">
-            <Header name={getUserForChat(currentChannel.members).profile?.name} avatarImg={getUserForChat(currentChannel.members).profile?.imageUrl}/>
+            <Header name={getUserForChat(currentChannel.members).profile?.name} avatarImg={getUserForChat(currentChannel.members).profile?.imageUrl} isOnline={isUserInCurrentChannelOnline}/>
         </div>
         
         {/* Chat feed */}

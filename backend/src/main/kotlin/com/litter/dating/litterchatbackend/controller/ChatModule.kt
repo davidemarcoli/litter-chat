@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 @Component
 class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: ObjectMapper, chatMessageRepository: ChatMessageRepository, channelRepository: ChannelRepository) {
@@ -24,12 +25,12 @@ class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: Ob
     class ConnectedSocketInfo(
         val sessionId: UUID,
         val userId: String,
-        val channel: String
+        val channelId: String
     )
 
     private val namespace: SocketIONamespace = server.addNamespace("/chat")
 
-    private val onlineChannelMembers: MutableMap<String, MutableSet<ConnectedSocketInfo>> = mutableMapOf()
+    private val onlineChannelMembers: MutableMap<String, MutableSet<ConnectedSocketInfo>> = ConcurrentHashMap()
 
     private val objectMapper: ObjectMapper = objectMapper
 
@@ -89,19 +90,31 @@ class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: Ob
                 handshakeData.url
             )
 
-            val channel = client.handshakeData.getSingleUrlParam("channelId")
+            val channelId = client.handshakeData.getSingleUrlParam("channelId")
             val userId = client.handshakeData.getSingleUrlParam("userId")
 
             val connectedSocketInfo = ConnectedSocketInfo(
                 client.sessionId,
                 userId!!,
-                channel
+                channelId
             )
 
-            if (onlineChannelMembers.containsKey(channel)) {
-                onlineChannelMembers[channel]?.add(connectedSocketInfo)
+            if (onlineChannelMembers.containsKey(channelId)) {
+                onlineChannelMembers[channelId]?.add(connectedSocketInfo)
             } else {
-                onlineChannelMembers[channel] = mutableSetOf(connectedSocketInfo)
+                onlineChannelMembers[channelId] = mutableSetOf(connectedSocketInfo)
+            }
+
+            for (member in onlineChannelMembers[channelId]!!) {
+                if (member.userId != userId) {
+                    namespace.getClient(member.sessionId)?.sendEvent(
+                        "userOnline", objectMapper.writeValueAsString(true)
+                    )
+                } else {
+                    namespace.getClient(member.sessionId)?.sendEvent(
+                        "userOnline", onlineChannelMembers[channelId]?.size!! > 1
+                    )
+                }
             }
         }
     }
@@ -113,10 +126,15 @@ class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: Ob
                 client.sessionId.toString()
             )
 
-            val channel = client.handshakeData.getSingleUrlParam("channelId")
+            val channelId = client.handshakeData.getSingleUrlParam("channelId")
             val userId = client.handshakeData.getSingleUrlParam("userId")
-            if (onlineChannelMembers.containsKey(channel)) {
-                onlineChannelMembers[channel]?.removeIf { it.sessionId == client.sessionId }
+            if (onlineChannelMembers.containsKey(channelId)) {
+                onlineChannelMembers[channelId]?.removeIf { it.sessionId == client.sessionId }
+                for (member in onlineChannelMembers[channelId]!!) {
+                    namespace.getClient(member.sessionId)?.sendEvent(
+                        "userOnline", objectMapper.writeValueAsString(onlineChannelMembers[channelId]?.size!! > 1)
+                    )
+                }
             }
         }
     }

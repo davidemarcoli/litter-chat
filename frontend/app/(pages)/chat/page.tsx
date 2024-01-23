@@ -34,6 +34,7 @@ const Chat = () => {
     // bin faul gsi... es isch 00:53 uhr
     const [selectedChannelIndex, setSelectedChannelIndex] = useState<number>(-1);
     const [channels, setChannels] = useState<ChannelType[]>([]);
+    const [isUserInCurrentChannelOnline, setIsUserInCurrentChannelOnline] = useState<boolean>(false);
 
     const auth = useAuth();
 
@@ -43,8 +44,12 @@ const Chat = () => {
 
     const handleOpenChannel = (channelIndex: number) => {
         setSelectedChannelIndex(channelIndex);
+        setIsUserInCurrentChannelOnline(false)
+
         const channel = channels[channelIndex];
+
         connect(channel.id, auth.principal?.id!);
+
         socket?.on("chat", (message: any) => {
 
             console.log("New message", message);
@@ -75,6 +80,10 @@ const Chat = () => {
             // WHY DOESN'T THAT TRIGGER A RE-RENDER? The new message is not being displayed
             setChannels(updatedChannels);
         });
+
+        socket?.on("userOnline", (isOnline: boolean) => {
+            setIsUserInCurrentChannelOnline(isOnline);
+        });
     };
 
     const handleSendMessage = (newMessage: ChatMessageType) => {
@@ -84,7 +93,10 @@ const Chat = () => {
     }
 
     const getChannels = () => {
-        ApiService.get("/channel").then(r => setChannels(r.data))
+        // TODO: only get channels where the current user is a member
+        console.log("Getting channels for user", auth)
+        // ApiService.get(`/channel/user/${auth.principal?.id}`).then(r => setChannels(r.data))
+        ApiService.get(`/channel`).then(r => setChannels(r.data))
     }
 
     return (
@@ -97,7 +109,7 @@ const Chat = () => {
             {/* Content Shelf */}
             <div className="w-3/4">
                 {selectedChannelIndex != -1 &&
-                    <ChatArea currentChannel={channels[selectedChannelIndex]} onSendMessage={handleSendMessage}/>}
+                    <ChatArea currentChannel={channels[selectedChannelIndex]} onSendMessage={handleSendMessage} isUserInCurrentChannelOnline={isUserInCurrentChannelOnline}/>}
             </div>
         </div>
     )
