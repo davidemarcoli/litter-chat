@@ -7,6 +7,7 @@ import {io} from "socket.io-client";
 import {ChannelType, UserType} from "@/components/types/types";
 import {Button} from "@/components/ui/button";
 import ApiService from "@/app/(services)/ApiService";
+import LitterCards from "@/components/discovery/LitterCards";
 
 // const test_chats: UserType[] = [
 //     {
