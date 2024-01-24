@@ -166,15 +166,16 @@ const Chat = () => {
 
     return (
         <div className="flex" style={{height: "100vh"}}>
-            <Button onClick={handleCRUDTest}>Test</Button>
+            {/*<Button onClick={handleCRUDTest}>Test</Button>*/}
             {/* Chats side bar*/}
             <div className="w-1/4 bg-PURPLE">
                 <ChannelList channels={channels} onOpenChannel={handleOpenChannel}/>
             </div>
 
             {/* Content Shelf */}
-            <div className="w-3/4">
-                {selectedChannel && <ChatArea currentChannel={selectedChannel} onSendMessage={handleSendMessage}/>}
+            <div className="w-3/4 light:bg-[#f8f9fa]">
+                {/*selectedChannel && <ChatArea currentChannel={selectedChannel} onSendMessage={handleSendMessage}/>*/}
+                <LitterCards/>
             </div>
         </div>
     )

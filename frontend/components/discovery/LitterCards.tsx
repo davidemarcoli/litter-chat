@@ -61,7 +61,9 @@ const LitterCards = () => {
 
   return (
     <div className="flex items-center justify-center">
-        <div className='relative flex flex-col max-h-screen overflow-y-auto flex-container'>
+        <div className='relative flex flex-col max-h-screen overflow-y-auto flex-container border-x-4 border-t-4 mt-4' style={{
+      borderImage: 'linear-gradient(to right, #ffbe0b, #fb5607, #ff006e, #8338ec, #3a86ff)',
+      borderImageSlice: 1,}}>
             <Image 
                 className='relative bottom-0 h-[80vh] m-4 z-1'
                 src={possibleMatches.imageUrl}
@@ -70,7 +72,7 @@ const LitterCards = () => {
 
             <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-white to-transparent"></div>
             
-            <Button onClick={expandProfile} radius='full' size="lg" className={`absolute bottom-[4%] right-[10%] shadow-lg mb-5`} isIconOnly aria-label="Info" variant="faded">
+            <Button onClick={expandProfile} radius='full' size="lg" className={`dark:bg-white dark:text-black absolute bottom-[4%] right-[10%] shadow-lg mb-5`} isIconOnly aria-label="Info" variant="faded">
                 <Info/>
             </Button>
 
@@ -81,7 +83,7 @@ const LitterCards = () => {
             )}
             
             <div className='items-start'>
-                <div className='absolute bottom-[5%] left-[5%] z-5'>
+                <div className='absolute bottom-[5%] left-[5%] z-5 dark:text-black'>
                     <p className='text-2xl font-bold'>{possibleMatches.name}, <i>27</i></p>
                     <p className='mt-1 text-xl font-semibold'>He / Him</p>
                 </div>

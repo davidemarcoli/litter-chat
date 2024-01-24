@@ -5,6 +5,7 @@ import {Badge, Avatar, Button as NextUIButton, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { ChannelListProps, UserType } from "../types/types";
 import {Button} from "@/components/ui/button";
+import { MessageSquare } from 'lucide-react';
 
 const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
@@ -28,32 +29,28 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     }
     
     return (
-          <div className="bg-PURPLE text-white relative">
-           
-            {/* Profile */}
-            <div>
-              <Link href="/profile">Profile</Link>
-            </div>
+          <div className="relative dark:bg-[#f8f9fa] dark:text-black bg-[#020817] text-white" style={{height: '100vh'}}>
+            <div style={{
+              background: 'linear-gradient(to right, #ffbe0b, #fb5607, #ff006e, #8338ec, #3a86ff)'
+            }}>
+              {/* Profile */}
+              <div>
+                <Link href="/profile">Profile</Link>
+              </div>
 
-            {/* Discover button */}
-            <div>
-              <NextUIButton
-              variant="flat"
-              color="default"
-              radius="lg"
-              size="sm">
-                <Image></Image>
-                Discover New Matches
-              </NextUIButton>
-                <Button>
-                    <Image></Image>
-                    Discover New Matches
-                </Button>
+              {/* Discover button */}
+              <div className="m-2">
+                <button className="border-2 rounded-2xl p-4">
+                  😏 Discover New Matches
+                </button>
+              </div>
             </div>
+            
 
             {/* Matches List */}
-            <div className="pt-4">
+            <div className="pt-4 flex flex-row items-center p-3 justify-between">
               <h2 className="font-bold">Matches</h2>
+              <MessageSquare/>
             </div>
               <ul className="space-y-2 px-2">
                 {channels.map((item, index) => (
