@@ -81,14 +81,13 @@ const ProfileForm = () => {
   }
 
   return (
-    <div className="relative flex flex-col max-h-screen flex-container">
-      <div>
-        Profile
+    <div className="relative flex flex-col max-h-screen flex-container py-16">
+      <div className='my-4'>
+        <h1 className="text-2xl font-medium mb-2">Profile</h1>
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-
           {/* Based 64 : https://www.kirandev.com/image-upload-in-nextjs-with-base64-encoding*/}
           <FormField
           control={form.control}
@@ -96,8 +95,10 @@ const ProfileForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>
-                <Camera/>
-                Profile Picture
+                <div className="flex flex-row items-center">
+                  <Camera/>
+                  <p className='text-lg ml-4'>Profile Picture</p>
+                </div>
                 </FormLabel>
               <FormControl>
                 <div className="relative">
@@ -115,12 +116,12 @@ const ProfileForm = () => {
           )}
         />
 
-        <div className='absolute bottom-[15%] left-[5%] z-9'>
+        <div className='absolute bottom-[15%] left-[5%] z-9 dark:text-black'>
           <p className='text-2xl font-bold'>Christina, <i>23</i></p>
           <p className='mt-1 text-xl font-semibold'>She / Her</p>
         </div>
 
-        <Button onClick={uploadPicture} radius='full' size="lg" className={`absolute bottom-[16%] right-[10%] shadow-lg mb-5 className="group bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-400 hover:to-pink-400 transition`} isIconOnly aria-label="Info" variant="faded">
+        <Button onClick={uploadPicture} radius='full' size="lg" className={`absolute bottom-[16%] right-[10%] shadow-lg mb-5 group bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-400 hover:to-pink-400 transition`} isIconOnly aria-label="Info" variant="faded">
           <Upload/>
         </Button>
           
@@ -192,7 +193,7 @@ const ProfileForm = () => {
             )}
           />
 
-          <Button type="submit">Update profile</Button>
+          <Button type="submit" className="bg-gradient-to-r from-orange-500 to-pink-500">Update profile</Button>
         </form>
       </Form>
     </div>
