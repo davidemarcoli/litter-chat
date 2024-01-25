@@ -9,39 +9,38 @@ import {Button} from "@/components/ui/button";
 import ApiService from "@/app/(services)/ApiService";
 import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 
-
-let socket: Socket | undefined = undefined;
-
-function connect(channelId: string, userId: string) {
-    if (socket) {
-        console.log("Disconnecting manually from server")
-        socket.disconnect();
-    }
-
-    const webSocketUrl = "ws://localhost:8085/chat?channelId=" + channelId + "&userId=" + userId;
-    socket = io(webSocketUrl);
-    socket.on("connect", () => {
-        console.log("Connected to server");
-    });
-    socket.on("disconnect", () => {
-        console.log("Disconnected from server");
-    });
-    socket.on("reconnect_attempt", () => {
-        console.log("Reconnecting to server");
-    });
-}
-
 const Chat = () => {
     // bin faul gsi... es isch 00:53 uhr
     const [selectedChannelIndex, setSelectedChannelIndex] = useState<number>(-1);
     const [channels, setChannels] = useState<ChannelType[]>([]);
     const [isUserInCurrentChannelOnline, setIsUserInCurrentChannelOnline] = useState<boolean>(false);
+    const [socket, setSocket] = useState<Socket | undefined>(undefined);
 
     const auth = useAuth();
 
     useEffect(() => {
         getChannels();
     }, []);
+
+    function connect(channelId: string, userId: string) {
+        if (socket) {
+            console.log("Disconnecting manually from server")
+            socket.disconnect();
+        }
+
+        console.log("Creating new socket")
+        const webSocketUrl = "ws://localhost:8085/chat?channelId=" + channelId + "&userId=" + userId;
+        setSocket(io(webSocketUrl));
+        socket?.on("connect", () => {
+            console.log("Connected to server");
+        });
+        socket?.on("disconnect", () => {
+            console.log("Disconnected from server");
+        });
+        socket?.on("reconnect_attempt", () => {
+            console.log("Reconnecting to server");
+        });
+    }
 
     const handleOpenChannel = (channelIndex: number) => {
         if (selectedChannelIndex === channelIndex) {

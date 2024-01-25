@@ -20,7 +20,12 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 @Component
-class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: ObjectMapper, chatMessageRepository: ChatMessageRepository, channelRepository: ChannelRepository) {
+class ChatModule @Autowired constructor(
+    server: SocketIOServer,
+    private val objectMapper: ObjectMapper,
+    private val chatMessageRepository: ChatMessageRepository,
+    private val channelRepository: ChannelRepository
+) {
 
     class ConnectedSocketInfo(
         val sessionId: UUID,
@@ -31,12 +36,6 @@ class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: Ob
     private val namespace: SocketIONamespace = server.addNamespace("/chat")
 
     private val onlineChannelMembers: MutableMap<String, MutableSet<ConnectedSocketInfo>> = ConcurrentHashMap()
-
-    private val objectMapper: ObjectMapper = objectMapper
-
-    private val chatMessageRepository: ChatMessageRepository = chatMessageRepository
-
-    private val channelRepository: ChannelRepository = channelRepository
 
     init {
         namespace.addConnectListener(onConnected())
