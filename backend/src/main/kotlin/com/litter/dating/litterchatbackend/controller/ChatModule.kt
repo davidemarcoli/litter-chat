@@ -68,7 +68,8 @@ class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: Ob
 
             val userId = client.handshakeData.getSingleUrlParam("userId")
             if (onlineChannelMembers.filter { it.key == channel.id }.isNotEmpty()) {
-                for (member in onlineChannelMembers[channel.id]!!) {
+                val membersCopy = onlineChannelMembers[channel.id]?.toSet() ?: emptySet()
+                for (member in membersCopy) {
                     if (member.userId != userId) {
                         namespace.getClient(member.sessionId)?.sendEvent(
                             "chat", objectMapper.writeValueAsString(savedMessage)
@@ -130,7 +131,8 @@ class ChatModule @Autowired constructor(server: SocketIOServer, objectMapper: Ob
             val userId = client.handshakeData.getSingleUrlParam("userId")
             if (onlineChannelMembers.containsKey(channelId)) {
                 onlineChannelMembers[channelId]?.removeIf { it.sessionId == client.sessionId }
-                for (member in onlineChannelMembers[channelId]!!) {
+                val membersCopy = onlineChannelMembers[channelId]?.toSet() ?: emptySet()
+                for (member in membersCopy) {
                     namespace.getClient(member.sessionId)?.sendEvent(
                         "userOnline", objectMapper.writeValueAsString(onlineChannelMembers[channelId]?.size!! > 1)
                     )

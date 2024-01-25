@@ -14,6 +14,7 @@ let socket: Socket | undefined = undefined;
 
 function connect(channelId: string, userId: string) {
     if (socket) {
+        console.log("Disconnecting manually from server")
         socket.disconnect();
     }
 
@@ -43,11 +44,15 @@ const Chat = () => {
     }, []);
 
     const handleOpenChannel = (channelIndex: number) => {
+        if (selectedChannelIndex === channelIndex) {
+            return;
+        }
         setSelectedChannelIndex(channelIndex);
         setIsUserInCurrentChannelOnline(false)
 
         const channel = channels[channelIndex];
 
+        console.log("Opening channel", channel)
         connect(channel.id, auth.principal?.id!);
 
         socket?.on("chat", (message: any) => {
