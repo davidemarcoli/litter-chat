@@ -10,6 +10,7 @@ import {useForm} from "react-hook-form"
 import * as z from "zod"
 import { useAuth } from "@/app/(contexts)/AuthenticationContext"
 import AuthenticationService from "@/app/(services)/AuthenticationService"
+import { navigate } from "@/app/(utils)/Actions"
 
 const formSchema = z.object({
     email: z.string().min(2).max(50).email("Invalid email address"),
@@ -41,6 +42,7 @@ export function SignupForm({className, ...props}: SignupFormFormProps) {
        const data =  await AuthenticationService().signup({email: values.email, password: values.password});
        console.log(data)
        await login(values.email, values.password)
+       navigate("/")
     }
 
     return (

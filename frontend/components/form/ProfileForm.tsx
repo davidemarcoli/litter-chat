@@ -3,9 +3,10 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useFieldArray, useForm } from "react-hook-form"
 import * as z from "zod"
+import { Image } from '@nextui-org/react'
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { Button } from '@nextui-org/react'
 import {
   Form,
   FormControl,
@@ -25,6 +26,10 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "@/components/ui/use-toast"
+import LookingForCard from "../discovery/LookingForCard"
+
+import "../../components/discovery/ExpansionAnimation.css"
+import { Camera, Upload } from 'lucide-react';
 
 const profileFormSchema = z.object({
   imageSource: z
@@ -33,8 +38,7 @@ const profileFormSchema = z.object({
     .string()
     .max(30, {
       message: "Profession must not be longer than 30 characters.",
-    })
-    .nullable(),
+    }),
   looking_for: z
     .string({
       required_error: "Please select an option to display.",
@@ -51,6 +55,10 @@ const defaultValues: Partial<ProfileFormValues> = {
   profession: "",
   bio: "",
   looking_for: "type-1"
+}
+
+const uploadPicture = () => {
+  console.log("upload")
 }
 
 const ProfileForm = () => {
@@ -73,18 +81,32 @@ const ProfileForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    <div className="relative flex flex-col max-h-screen flex-container py-16">
+      <div className='my-4'>
+        <h1 className="text-2xl font-medium mb-2">Profile</h1>
+      </div>
 
-        {/* Based 64 : https://www.kirandev.com/image-upload-in-nextjs-with-base64-encoding*/}
-        <FormField
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* Based 64 : https://www.kirandev.com/image-upload-in-nextjs-with-base64-encoding*/}
+          <FormField
           control={form.control}
           name="imageSource"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image</FormLabel>
+              <FormLabel>
+                <div className="flex flex-row items-center">
+                  <Camera/>
+                  <p className='text-lg ml-4'>Profile Picture</p>
+                </div>
+                </FormLabel>
               <FormControl>
-                <img src={field.value}/>
+                <div className="relative">
+                  <Image className="h-[80vh] z-0" src={field.value} />
+                  <div className="absolute inset-0 z-1">
+                    <div className="absolute top-[75%] left-0 w-full h-1/4 bg-gradient-to-b from-transparent to-white" />
+                  </div>
+                </div>
               </FormControl>
               <FormDescription>
                 blah blah blah
@@ -93,81 +115,88 @@ const ProfileForm = () => {
             </FormItem>
           )}
         />
-        
-        <div className="bg-orange-400">
-          Christina 99
-          <div>
-            <span>She/her</span>
-          </div>
+
+        <div className='absolute bottom-[15%] left-[5%] z-9 dark:text-black'>
+          <p className='text-2xl font-bold'>Christina, <i>23</i></p>
+          <p className='mt-1 text-xl font-semibold'>She / Her</p>
         </div>
-        
-        <FormField
-          control={form.control}
-          name="profession"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Profession</FormLabel>
-              <FormControl>
-                <Input placeholder="What do you do?" {...field} />
-              </FormControl>
-              <FormDescription>
-                blah blah blah
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
 
-        <FormField
-          control={form.control}
-          name="looking_for"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Looking for</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+        <Button onClick={uploadPicture} radius='full' size="lg" className={`absolute bottom-[16%] right-[10%] shadow-lg mb-5 group bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-400 hover:to-pink-400 transition`} isIconOnly aria-label="Info" variant="faded">
+          <Upload/>
+        </Button>
+          
+          <FormField
+            control={form.control}
+            name="profession"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xl">Profession</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
+                  <Input placeholder="What do you do?" {...field} />
                 </FormControl>
-                <SelectContent>
-                  <SelectItem value="type-1">Not sure yet</SelectItem>
-                  <SelectItem value="type-2">Serious reltionship</SelectItem>
-                  <SelectItem value="type-3">Just Friends</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                blah blah blah
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                <FormDescription>
+                  blah blah blah
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                blah blah blah
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+          <FormField
+            control={form.control}
+            name="looking_for"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xl">Looking for</FormLabel>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a verified email to display" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="Unknown">Not sure yet</SelectItem>
+                    <SelectItem value="Serious">Serious reltionship</SelectItem>
+                    <SelectItem value="Casual">Casual Dating</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  <div>
+                    <p className="my-2">blah blah blah</p>
+                    <LookingForCard type={field.value} />
+                  </div>
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <Button type="submit">Update profile</Button>
-      </form>
-    </Form>
+
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel className="text-xl">Bio</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Tell us a little bit about yourself"
+                    className="resize-none"
+                    {...field}
+                  />
+                </FormControl>
+                <FormDescription>
+                  blah blah blah
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit" className="bg-gradient-to-r from-orange-500 to-pink-500">Update profile</Button>
+        </form>
+      </Form>
+    </div>
   )
 }
 

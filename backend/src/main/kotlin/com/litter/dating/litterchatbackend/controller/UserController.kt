@@ -6,15 +6,16 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-@RestController
 @CrossOrigin
+@RestController
 @RequestMapping("/user")
 class UserController(private val userRepository: UserRepository) {
+    @CrossOrigin
     @GetMapping("/profile/{id}")
     fun getProfile(@PathVariable id: String): ResponseEntity<Profile> {
         val user = userRepository.findById(id).orElseThrow()
         val profile = user.profile
             ?: throw Exception("Profile not found")
-        return ResponseEntity(profile, HttpStatus.OK)
+        return ResponseEntity.ok(profile)
     }
 }

@@ -21,7 +21,6 @@ interface HeaderProps {
     isOnline: boolean
 }
 
-
 // Basic types:
 interface ChatMessageType {
     content: string

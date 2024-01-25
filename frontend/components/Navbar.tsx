@@ -1,10 +1,11 @@
+"use client"
 import React from "react";
 import Link from "next/link";
 import {ModeToggle} from "@/components/theme/mode-toggle";
+import { useData } from "@/app/(contexts)/DataContext";
 
-const Navbar = async () => {
-
-
+const Navbar = () => {
+    const { profile } = useData()
     return (
         <div
             className="h-12 text-red-500 p-4 flex items-center justify-between border-b-2 border-b-red-500 uppercase md:h-24 lg:px-20 xl:px-40">
@@ -26,7 +27,7 @@ const Navbar = async () => {
                 {/* Update Navbar based on role*/}
                 {/*!session?.user*/ false ? (
                     <Link href="/api/auth/signin?callbackUrl=%2F">Login</Link>
-                ) : (<p>You are logged in ({"PLACEHOLDER"})</p>)}
+                ) : (<p>You are logged in {profile?.name}</p>)}
             </div>
         </div>
     );

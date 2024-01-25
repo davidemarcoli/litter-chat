@@ -8,6 +8,7 @@ import {ChannelType, ChatMessageType} from "@/components/types/types";
 import {Button} from "@/components/ui/button";
 import ApiService from "@/app/(services)/ApiService";
 import {useAuth} from "@/app/(contexts)/AuthenticationContext";
+import LitterCards from "@/components/discovery/LitterCards";
 
 const Chat = () => {
     // bin faul gsi... es isch 00:53 uhr
@@ -111,9 +112,10 @@ const Chat = () => {
             </div>
 
             {/* Content Shelf */}
-            <div className="w-3/4">
+            <div className="w-3/4 light:bg-[#f8f9fa]">
                 {selectedChannelIndex != -1 &&
                     <ChatArea currentChannel={channels[selectedChannelIndex]} onSendMessage={handleSendMessage} isUserInCurrentChannelOnline={isUserInCurrentChannelOnline}/>}
+                {/*<LitterCards/>*/}
             </div>
         </div>
     )
