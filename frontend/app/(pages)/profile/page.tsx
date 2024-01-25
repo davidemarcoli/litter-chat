@@ -7,6 +7,7 @@ import { Divider } from '@nextui-org/react'
 import { ArrowLeftFromLine, LogOut } from 'lucide-react'
 import PreferencesOverview from '@/components/profile/PreferencesOverview';
 import SubscriptionOverview from "@/components/profile/SubscriptionOverview"
+import { useAuth } from '@/app/(contexts)/AuthenticationContext'
 
 enum TabType {
   "Preferences",
@@ -22,6 +23,7 @@ const tabs = [
 
 const ProfilePage = () => {
   const [currentTab, setCurrentTab] = useState(TabType.Preferences)
+  const {logout} = useAuth()
 
   useEffect(() => {
   }, [currentTab])
@@ -62,10 +64,11 @@ const ProfilePage = () => {
               </ul>
             ))}
 
-            <div className='m-4 bg-red-500 absolute bottom-[10%] flex flex-row items-center'>
+            <div onClick={() => logout()} className="my-5 inline-flex absolute bottom-[10%] flex-row rounded-2xl p-2 bg-white text-black dark:text-white dark:bg-[#020817] cursor-pointer">
               <LogOut/>
-              <p className='text-xl ml-4'>Log out - Not hooked up</p>
+              <p className='text-xl ml-4'>Log out</p>
             </div>
+            
         </div>
 
         <div className="w-2/3 flex flex-col items-center">

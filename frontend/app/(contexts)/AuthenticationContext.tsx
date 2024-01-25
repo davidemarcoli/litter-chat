@@ -4,8 +4,8 @@ import Principal from "@/components/types/Principal";
 import AuthenticationService from "../(services)/AuthenticationService";
 import CookieUtility from "../(utils)/CookieUtility";
 import JWTUtility from "../(utils)/JWTUtility";
-import { redirect } from 'next/navigation'
-import { NextRequest } from "next/server";
+import { navigate } from "../(utils)/Actions";
+
 
 type AuthenticationProviderProps = {
   children: React.ReactNode;
@@ -54,7 +54,7 @@ export const AuthenticationContextProvider = ({
         setPrincipal(undefined);
         CookieUtility.set(ACCESS_TOKEN, "");
         try {
-          redirect("/login")
+          navigate("/login")
         } catch (error) {
           
         }
@@ -73,7 +73,7 @@ export const AuthenticationContextProvider = ({
   const logout = async () => {
     CookieUtility.remove(ACCESS_TOKEN);
     setPrincipal(undefined);
-    redirect("/login")
+    navigate("/login")
   };
 
   return (

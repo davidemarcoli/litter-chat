@@ -9,7 +9,7 @@ const PreferencesOverview = () => {
         <h1 className="text-2xl font-medium mb-2">Preferences</h1>
 
         <p className="text-md text-muted-foreground">
-          Screen somewhat too bright? Why don't you toggle on dark mode.
+          Screen somewhat too bright? Why don&apos;t you toggle on dark mode.
         </p>
         <p className="text-md text-muted-foreground my-2">
           Soothes the eyes am I right 😎!
