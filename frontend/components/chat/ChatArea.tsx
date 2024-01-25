@@ -1,33 +1,41 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import RoundedTextBox from './TextField';
 import Header from './Header';
 import ChatMessage from './messages/ChatMessage';
 import PromoCard from '../promo/PromoCard';
 import {Chip} from "@nextui-org/react";
 import {ChatAreaProps, ChatMessageType, UserType} from '../types/types';
+import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 
-const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
+const ChatArea = ({currentChannel, onSendMessage, isUserInCurrentChannelOnline}: ChatAreaProps) => {
     const [messages, setMessages] = useState<ChatMessageType[]>(currentChannel.chatMessages);
 
+    const auth = useAuth();
 
-    const handleSendMessage = (newMessage: ChatMessageType) => {
+    useEffect(() => {
+        setMessages(currentChannel.chatMessages)
+    }, [currentChannel.chatMessages]);
 
+    const handleSendMessage = (message: string) => {
+        const newMessage: ChatMessageType = {} as ChatMessageType;
+        newMessage.content = message;
+        newMessage.createdAt = new Date();
+        newMessage.sender =  {id: auth.principal!.id} as UserType;
+        newMessage.channel = currentChannel;
         const updatedMessages = [...messages, newMessage];
         setMessages(updatedMessages);
         onSendMessage(newMessage);
     };
 
     const isUser = (user: UserType) => {
-        return user.id === "1"; // TODO: replace with current user
+        return user.id === auth.principal?.id;
     }
 
     // TODO: this is a duplicate of the one in ChannelList.tsx
     const getUserForChat = (users: UserType[]) => {
-        console.log(users)
-        console.log(currentChannel)
-        const user = users.find((user) => user.id !== "1"); // TODO: replace with current user
+        const user = users.find((user) => user.id !== auth.principal?.id); // TODO: replace with current user
         if (!user) {
             return users[0];
         } else {
@@ -40,7 +48,7 @@ const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
        
         {/* Chat header */}
         <div className="w-full sticky top-0">
-            <Header name={getUserForChat(currentChannel.members).profile?.name} avatarImg={getUserForChat(currentChannel.members).profile?.imageUrl}/>
+            <Header name={getUserForChat(currentChannel.members).profile?.name} avatarImg={getUserForChat(currentChannel.members).profile?.imageUrl} isOnline={isUserInCurrentChannelOnline}/>
         </div>
         
         {/* Chat feed */}
@@ -49,7 +57,7 @@ const ChatArea = ({currentChannel, onSendMessage}: ChatAreaProps) => {
                 {messages.map((item, index) => (
                 <li key={index}>
                     <div className="flex flex-col">
-                        <ChatMessage message={item.content} timestamp={item.createdAt} isUser={isUser(item.sender)}/>
+                        <ChatMessage message={item.content} timestamp={new Date(item.createdAt)} isUser={isUser(item.sender)}/>
                     </div>
                 </li>
             ))}

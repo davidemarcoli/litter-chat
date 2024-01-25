@@ -23,6 +23,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	// TODO: This should be a temporary fix for the issue with the serialization of the ChatMessage object (BUT IT DOESN'T WORK, WHYYYYY???)
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("com.corundumstudio.socketio:netty-socketio:2.0.6")
     implementation("io.jsonwebtoken:jjwt-api:0.12.3")

@@ -5,26 +5,29 @@ import {Badge, Avatar, Button as NextUIButton, Image } from "@nextui-org/react";
 import Link from "next/link";
 import { ChannelListProps, UserType } from "../types/types";
 import {Button} from "@/components/ui/button";
+import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 import { MessageSquare } from 'lucide-react';
 
 const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
 
+    const auth = useAuth();
+
     const handleItemClick = (index: number) => {
       setSelectedItem(index);
       // Open chat field
-      onOpenChannel(channels[index]);
+      onOpenChannel(index);
     };
 
     useEffect(() => {
     }, [selectedItem])
 
     const getUserForChat = (users: UserType[]) => {
-        const user = users.find((user) => user.id !== "1"); // TODO: replace with current user
-        if (!user) {
+        const notCurrentUsers = users.filter((user) => user.id !== auth.principal?.id);
+        if (notCurrentUsers.length === 0) {
             return users[0];
         } else {
-            return user;
+            return notCurrentUsers[0];
         }
     }
     
@@ -45,7 +48,6 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
                 </button>
               </div>
             </div>
-            
 
             {/* Matches List */}
             <div className="pt-4 flex flex-row items-center p-3 justify-between">

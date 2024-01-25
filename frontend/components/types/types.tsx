@@ -6,12 +6,19 @@
 // Component PROPS:
 interface ChannelListProps {
     channels: ChannelType[], // bin faul gsi... es isch 00:53 uhr
-    onOpenChannel: (chatUser: any) => void;
+    onOpenChannel: (index: number) => void;
 }
 
 interface ChatAreaProps {
     currentChannel: ChannelType  // TODO(sascha): Added this as a quick fix.
     onSendMessage: (newMessage: ChatMessageType) => void;
+    isUserInCurrentChannelOnline: boolean;
+}
+
+interface HeaderProps {
+    name: string,
+    avatarImg: string,
+    isOnline: boolean
 }
 
 // Basic types:
@@ -23,7 +30,7 @@ interface ChatMessageType {
 }
 
 interface ChannelType {
-    id: number
+    id: string
     members: UserType[]
     chatMessages: ChatMessageType[]
 }
@@ -43,4 +50,4 @@ interface ProfileType {
     updatedAt: Date
 }
 
-export type {ChannelListProps, ChatAreaProps, ChatMessageType, ChannelType, UserType, ProfileType};
+export type {ChannelListProps, ChatAreaProps, HeaderProps, ChatMessageType, ChannelType, UserType, ProfileType};

@@ -1,12 +1,10 @@
 import { Avatar } from '@nextui-org/react';
 import React from 'react';
+import {HeaderProps} from "@/components/types/types";
 
-interface HeaderProps {
-  name: string,
-  avatarImg: string,
-}
 
-const Header = ({name, avatarImg}: HeaderProps) => {
+
+const Header = ({name, avatarImg, isOnline}: HeaderProps) => {
   return (
     <div className="flex flex-row items-center bg-PURPLE p-3">
       
@@ -24,7 +22,7 @@ const Header = ({name, avatarImg}: HeaderProps) => {
       <div className="flex-col px-6">
         <h1 className="text-white font-bold text-2xl self-center">{name}</h1>
         {/* wouldn't know how to implement this honestly... */}
-        <p className="text-green-400">Online</p>
+        <p className={`${isOnline ? 'text-green-400' : 'text-red-400'}`}>{isOnline ? "Online" : "Offline"}</p>
       </div>
     </div>
   );

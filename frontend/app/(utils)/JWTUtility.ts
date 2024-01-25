@@ -4,7 +4,7 @@ export const JWT_NO_EXP_CLAIM =
   "No expiration claim found inside the token-payload";
 
   const decodePayload = (jwt: string): any => {
-    console.log(jwt);
+    // console.log(jwt);
     
     const encodedPayload = jwt.split(".")[1];
     return JSON.parse(B64Utility.decode(encodedPayload));

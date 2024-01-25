@@ -38,18 +38,18 @@ class JwtAuthFilter : OncePerRequestFilter() {
         var token: String? = null
         var userId: String? = null
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            println("authHeader: $authHeader")
+//            println("authHeader: $authHeader")
             token = authHeader.substring(7).trim()
             userId = jwtService!!.extractSubject(token)
-            println("token: $token")
-            println("username: $userId")
+//            println("token: $token")
+//            println("username: $userId")
         }
         if (userId != null && SecurityContextHolder.getContext().authentication == null) {
             val userDetails: UserDetails = userDetailsService!!.loadUserByUsername(userId)
 
             val user: User = userDetails as User
 
-            println("Token valid: " + jwtService!!.validateToken(token, user))
+//            println("Token valid: " + jwtService!!.validateToken(token, user))
 
             if (jwtService!!.validateToken(token, user)) {
                 val authToken = UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)

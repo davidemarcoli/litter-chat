@@ -1,6 +1,11 @@
 package com.litter.dating.litterchatbackend.config
 
 import com.corundumstudio.socketio.SocketIOServer
+import com.corundumstudio.socketio.protocol.JacksonJsonSupport
+import com.corundumstudio.socketio.protocol.JsonSupport
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.litter.dating.litterchatbackend.model.entity.ChatMessage
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
