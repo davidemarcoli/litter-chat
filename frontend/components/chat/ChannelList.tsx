@@ -7,6 +7,7 @@ import { ChannelListProps, UserType } from "../types/types";
 import {Button} from "@/components/ui/button";
 import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 import { MessageSquare } from 'lucide-react';
+import {getUserForChat} from "@/lib/chatMessageUtils";
 
 const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
     const [selectedItem, setSelectedItem] = useState<number | null>(null);
@@ -21,15 +22,6 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
 
     useEffect(() => {
     }, [selectedItem])
-
-    const getUserForChat = (users: UserType[]) => {
-        const notCurrentUsers = users.filter((user) => user.id !== auth.principal?.id);
-        if (notCurrentUsers.length === 0) {
-            return users[0];
-        } else {
-            return notCurrentUsers[0];
-        }
-    }
     
     return (
           <div className="relative dark:bg-[#f8f9fa] dark:text-black bg-[#020817] text-white" style={{height: '100vh'}}>
@@ -66,12 +58,12 @@ const ChannelList = ({channels, onOpenChannel}: ChannelListProps) => {
                           {/*  size="lg"*/}
                           {/*  src={item.url}*/}
                           {/*/>*/}
-                          <Image width={50} height={50} src={getUserForChat(item.members).profile?.imageUrl}></Image>
+                          <Image width={50} height={50} src={getUserForChat(item.members, auth.principal).profile?.imageUrl}></Image>
                       {/*</Badge>*/}
                       {/*</div>*/}
                       <div className="flex-col px-4">
-                        <p className="font-bold">{getUserForChat(item.members).profile?.name}</p>
-                        <p className="text-sm text-gray-400">{getUserForChat(item.members).profile?.bio}</p>
+                        <p className="font-bold">{getUserForChat(item.members, auth.principal).profile?.name}</p>
+                        <p className="text-sm text-gray-400">{getUserForChat(item.members, auth.principal).profile?.bio}</p>
                       </div>
                     </div>
                   </li>
