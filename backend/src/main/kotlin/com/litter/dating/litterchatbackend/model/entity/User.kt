@@ -2,6 +2,7 @@ package com.litter.dating.litterchatbackend.model.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.security.core.GrantedAuthority
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.beans.ConstructorProperties
 import java.time.LocalDateTime
 
-@JsonIgnoreProperties("authorities", "password")
+@JsonIgnoreProperties("authorities", "password", ignoreUnknown = true)
 data class User @ConstructorProperties("id") constructor(
     @Id
     val id: String? = null,
@@ -60,4 +61,6 @@ data class User @ConstructorProperties("id") constructor(
     fun setProfile(profile: Profile): User {
         return this.copy(profile = profile)
     }
+
+
 }

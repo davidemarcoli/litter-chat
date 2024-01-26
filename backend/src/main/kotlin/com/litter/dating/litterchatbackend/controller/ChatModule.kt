@@ -105,7 +105,10 @@ class ChatModule @Autowired constructor(
                 onlineChannelMembers[channelId] = mutableSetOf(connectedSocketInfo)
             }
 
-            for (member in onlineChannelMembers[channelId]!!) {
+            // Create a copy of the set before iterating
+            val membersCopy = onlineChannelMembers[channelId]?.toSet() ?: emptySet()
+
+            for (member in membersCopy) {
                 if (member.userId != userId) {
                     namespace.getClient(member.sessionId)?.sendEvent(
                         "userOnline", objectMapper.writeValueAsString(true)
@@ -128,10 +131,14 @@ class ChatModule @Autowired constructor(
 
             val channelId = client.handshakeData.getSingleUrlParam("channelId")
             val userId = client.handshakeData.getSingleUrlParam("userId")
+
             if (onlineChannelMembers.containsKey(channelId)) {
-                onlineChannelMembers[channelId]?.removeIf { it.sessionId == client.sessionId }
-                val membersCopy = onlineChannelMembers[channelId]?.toSet() ?: emptySet()
-                for (member in membersCopy) {
+                val iterator = onlineChannelMembers[channelId]?.iterator()
+                while (iterator?.hasNext() == true) {
+                    val member = iterator.next()
+                    if (member.sessionId == client.sessionId) {
+                        iterator.remove() // Use iterator's remove method to avoid ConcurrentModificationException
+                    }
                     namespace.getClient(member.sessionId)?.sendEvent(
                         "userOnline", objectMapper.writeValueAsString(onlineChannelMembers[channelId]?.size!! > 1)
                     )
