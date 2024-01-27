@@ -113,9 +113,9 @@ const Chat = () => {
 
             {/* Content Shelf */}
             <div className="w-3/4 light:bg-[#f8f9fa]">
-                {selectedChannelIndex != -1 &&
-                    <ChatArea currentChannel={channels[selectedChannelIndex]} onSendMessage={handleSendMessage} isUserInCurrentChannelOnline={isUserInCurrentChannelOnline}/>}
-                {/*<LitterCards/>*/}
+                {/*{selectedChannelIndex != -1 &&*/}
+                {/*    <ChatArea currentChannel={channels[selectedChannelIndex]} onSendMessage={handleSendMessage} isUserInCurrentChannelOnline={isUserInCurrentChannelOnline}/>}*/}
+                <LitterCards/>
             </div>
         </div>
     )

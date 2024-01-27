@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from 'react';
 import RoundedTextBox from './TextField';
-import Header from './Header';
+import ChatHeader from './ChatHeader';
 import ChatMessage from './messages/ChatMessage';
 import {ChatAreaProps, ChatMessageType, UserType} from '../types/types';
 import {useAuth} from "@/app/(contexts)/AuthenticationContext";
@@ -39,9 +39,9 @@ const ChatArea = ({currentChannel, onSendMessage, isUserInCurrentChannelOnline}:
 
             {/* Chat header */}
             <div className="w-full sticky top-0">
-                <Header name={getUserForChat(currentChannel.members, auth.principal).profile?.name}
-                        avatarImg={getUserForChat(currentChannel.members, auth.principal).profile?.imageUrl}
-                        isOnline={isUserInCurrentChannelOnline}/>
+                <ChatHeader name={getUserForChat(currentChannel.members, auth.principal).profile?.name}
+                            avatarImg={getUserForChat(currentChannel.members, auth.principal).profile?.imageUrl}
+                            isOnline={isUserInCurrentChannelOnline}/>
             </div>
 
             {/* Chat feed */}

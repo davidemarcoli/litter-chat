@@ -3,9 +3,13 @@ import React from "react";
 import Link from "next/link";
 import {ModeToggle} from "@/components/theme/mode-toggle";
 import { useData } from "@/app/(contexts)/DataContext";
+import {useAuth} from "@/app/(contexts)/AuthenticationContext";
+import {getSubscriptionsOfUser} from "@/app/(actions)/stripe";
+import {Stripe} from "stripe";
 
 const Navbar = () => {
     const { profile } = useData()
+
     return (
         <div
             className="h-12 text-red-500 p-4 flex items-center justify-between border-b-2 border-b-red-500 uppercase md:h-24 lg:px-20 xl:px-40">
@@ -21,6 +25,7 @@ const Navbar = () => {
             {/* MOBILE MENU */}
             <div className="md:hidden">
             </div>
+
             {/* RIGHT LINKS */}
             <div className="hidden md:flex gap-4 items-center justify-end flex-1">
                 <ModeToggle/>

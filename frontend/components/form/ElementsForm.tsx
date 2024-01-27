@@ -17,6 +17,7 @@ import { formatAmountForDisplay } from '../../app/(utils)/stripe-helpers'
 import * as config from '../../app/(config)/CurrencyConstants'
 import getStripe from '../../app/(utils)/getStripe'
 import { createPaymentIntent } from '../../app/(actions)/stripe'
+import {useAuth} from "@/app/(contexts)/AuthenticationContext";
 
 const CheckoutForm = () => {
   const [input, setInput] = React.useState<{
@@ -34,6 +35,8 @@ const CheckoutForm = () => {
 
   const stripe = useStripe()
   const elements = useElements()
+
+  const auth = useAuth();
 
   const PaymentStatus = ({ status }: { status: string }) => {
     switch (status) {
@@ -90,7 +93,8 @@ const CheckoutForm = () => {
 
       // Create a PaymentIntent with the specified amount.
       const { client_secret: clientSecret } = await createPaymentIntent(
-        new FormData(e.target as HTMLFormElement)
+        new FormData(e.target as HTMLFormElement),
+        auth.principal?.id
       )
 
       // Use your card Element with other Stripe.js APIs

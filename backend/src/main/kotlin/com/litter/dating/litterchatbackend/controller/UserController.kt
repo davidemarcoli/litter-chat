@@ -1,6 +1,7 @@
 package com.litter.dating.litterchatbackend.controller
 
 import com.litter.dating.litterchatbackend.model.entity.Profile
+import com.litter.dating.litterchatbackend.model.entity.User
 import com.litter.dating.litterchatbackend.repository.UserRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -17,5 +18,12 @@ class UserController(private val userRepository: UserRepository) {
         val profile = user.profile
             ?: throw Exception("Profile not found")
         return ResponseEntity.ok(profile)
+    }
+
+    @CrossOrigin
+    @GetMapping("/{id}")
+    fun getUser(@PathVariable id: String): ResponseEntity<User> {
+        val user = userRepository.findById(id).orElseThrow()
+        return ResponseEntity.ok(user)
     }
 }
