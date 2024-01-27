@@ -38,12 +38,12 @@ const Chat = ({channels = []}: {channels: ChannelType[]}) => {
         <div className="flex" style={{height: "100vh"}}>
             {/* Chats side bar*/}
             <div className="w-1/4 bg-PURPLE">
-                <ChannelList channels={channels} onOpenChannel={handleOpenChannel}/>
+                {/*<ChannelList channels={channels} onOpenChannel={handleOpenChannel}/>< <-- Davide ich tätsch dich für das*/> }
             </div>
 
             {/* Content Shelf */}
             <div className="w-3/4">
-                {selectedChannel && <ChatArea currentChannel={selectedChannel} onSendMessage={handleSendMessage}/>}
+                {/*selectedChannel && <ChatArea currentChannel={selectedChannel} onSendMessage={handleSendMessage}/>  <-- Davide ich tätsch dich für das*/}
             </div>
         </div>
     )
